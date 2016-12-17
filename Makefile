@@ -13,5 +13,8 @@ gopath/src/github.com/bearstech/go-lepsius:
 	mkdir -p gopath/src/github.com/bearstech
 	ln -s `pwd` gopath/src/github.com/bearstech/go-lepsius
 
+test:
+	go test -v github.com/bearstech/go-lepsius
+
 clean:
 	rm -rf gopath
