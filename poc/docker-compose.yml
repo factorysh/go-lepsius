@@ -12,14 +12,14 @@ services:
   web:
     image: nginx
     ports:
-     - 8080:80
+     - 80
 
   proxy:
-    image: haproxy:1.5
+    build: haproxy
     volumes:
-     - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+     - ./haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
     ports:
-     - 8888
+     - 8888:8888
     depends_on:
      - log
      - web
