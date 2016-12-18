@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  log:
+    image: debian
+    ports:
+     - 1514
+    volumes:
+     - ./lepsius:/opt/lepsius:ro
+    command: /opt/lepsius
+
+  web:
+    image: nginx
+    ports:
+     - 8080:80
+
+  proxy:
+    image: haproxy:1.5
+    volumes:
+     - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    ports:
+     - 8888
+    depends_on:
+     - log
+     - web

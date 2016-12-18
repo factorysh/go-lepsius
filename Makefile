@@ -1,5 +1,8 @@
+.PHONY: poc
 export GOPATH=$(shell pwd)/gopath
 
+build: lib
+	go build ./cli/lepsius
 
 lib: gopath/src/github.com/bearstech/go-lepsius gopath/src/github.com/vjeantet/grok gopath/src/gopkg.in/mcuadros/go-syslog.v2
 
@@ -18,3 +21,9 @@ test:
 
 clean:
 	rm -rf gopath
+
+poc:
+	rm -f gopath/src/github.com/bearstech/go-lepsius
+	ln -s /go/ gopath/src/github.com/bearstech/go-lepsius
+	docker run -it --rm -v `pwd`:/go -e GOPATH=/go/gopath golang go build -o poc/lepsius ./cli/lepsius
+	rm -f gopath/src/github.com/bearstech/go-lepsius
