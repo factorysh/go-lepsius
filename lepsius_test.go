@@ -1,18 +1,40 @@
 package lepsius
 
 import (
+	"fmt"
 	client "log/syslog"
 	"os"
 	"testing"
 	"time"
 
+	"github.com/vjeantet/grok"
 	"gopkg.in/mcuadros/go-syslog.v2"
 )
+
+func TestGrok(t *testing.T) {
+	g, err := grok.New()
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = haproxyGrok(g)
+	if err != nil {
+		t.Fatal(err)
+	}
+	values, err := g.Parse(`\[%{HAPROXYDATE:plop}\]`, `[29/Oct/2015:23:59:29.957]`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(values)
+
+}
 
 func TestSyslog(t *testing.T) {
 	_ = os.Remove("/tmp/test.sock")
 
-	handler := NewHandler("%{HAPROXYHTTP}")
+	handler, err := NewHandler("%{HAPROXYHTTP}")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	server := syslog.NewServer()
 	server.SetFormat(syslog.Automatic)
