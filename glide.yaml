@@ -1,0 +1,16 @@
+package: .
+import:
+- package: github.com/bearstech/go-lepsius
+- package: github.com/vjeantet/grok
+  version: ^1.0.0
+- package: gopkg.in/mcuadros/go-syslog.v2
+  version: ^2.2.1
+  subpackages:
+  - format
+  - internal/syslogparser
+  - internal/syslogparser/rfc3164
+  - internal/syslogparser/rfc5424
+- package: github.com/influxdata/tail
+  version: ^1.0.0
+testImport:
+- package: gopkg.in/check.v1

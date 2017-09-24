@@ -1,0 +1,19 @@
+hash: 4a4342ee10794c6a35992550530199330ea8f6fc257dd1485fd31727a6243711
+updated: 2017-09-24T22:34:01.624672074+02:00
+imports:
+- name: github.com/bearstech/go-lepsius
+  version: 117e607931b4b61df72a8962256aa6af3ce25a94
+- name: github.com/influxdata/tail
+  version: a30252cb686a21eb2d0b98132633053ec2f7f1e5
+- name: github.com/vjeantet/grok
+  version: ce01e59abcf6fbc9833b7deb5e4b8ee1769bcc53
+- name: gopkg.in/mcuadros/go-syslog.v2
+  version: 9cf13b7327c0e153da3cba3540c2ae2b879c3859
+  subpackages:
+  - format
+  - internal/syslogparser
+  - internal/syslogparser/rfc3164
+  - internal/syslogparser/rfc5424
+testImports:
+- name: gopkg.in/check.v1
+  version: 20d25e2804050c1cd24a7eea1e7a6447dd0e74ec
