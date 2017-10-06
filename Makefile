@@ -1,16 +1,16 @@
 .PHONY: poc
 export GOPATH=$(shell pwd)/gopath
 
-build: vendor gp
-	go build ./cli/lepsius
+build: gp
+	cd gopath/src/github.com/bearstech/go-lepsius && go build ./cli/lepsius
 
 gopath/src/github.com/bearstech/go-lepsius:
 	mkdir -p gopath/src/github.com/bearstech/
-	ln -s ../../../.. gopath/src/github.com/bearstech/go-lepsius
+	ln -sf ../../../.. gopath/src/github.com/bearstech/go-lepsius
 
-gp: gopath/src/github.com/bearstech/go-lepsius vendor
+gp: | vendor
 
-vendor:
+vendor: | gopath/src/github.com/bearstech/go-lepsius
 	glide install
 
 test: gp
