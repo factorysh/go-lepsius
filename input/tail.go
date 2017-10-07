@@ -1,15 +1,15 @@
-package tail
+package input
 
 import (
 	"errors"
 	_tail "github.com/hpcloud/tail"
 )
 
-type Input struct {
+type Tail struct {
 	tail *_tail.Tail
 }
 
-func (i *Input) Lines() chan string {
+func (i *Tail) Lines() chan string {
 	lines := make(chan string)
 	go func() {
 		for line := range i.tail.Lines {
@@ -19,7 +19,7 @@ func (i *Input) Lines() chan string {
 	return lines
 }
 
-func (i *Input) Configure(conf map[string]interface{}) error {
+func (i *Tail) Configure(conf map[string]interface{}) error {
 	path_raw, ok := conf["path"]
 	if !ok {
 		return errors.New("path key is mandatory")

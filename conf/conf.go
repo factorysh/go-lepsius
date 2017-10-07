@@ -7,7 +7,7 @@ type Book struct {
 		Name string                 `yaml:"name"`
 		Args map[string]interface{} `yaml:"args"`
 	} `yaml:"input"`
-	Pattern struct {
+	Parser struct {
 		Name string
 		Args map[string]interface{}
 	}

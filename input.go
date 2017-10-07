@@ -3,7 +3,8 @@ package lepsius
 import (
 	"fmt"
 	"github.com/bearstech/go-lepsius/conf"
-	"github.com/bearstech/go-lepsius/tail"
+	_input "github.com/bearstech/go-lepsius/input"
+	_parser "github.com/bearstech/go-lepsius/parser"
 )
 
 type Input interface {
@@ -13,14 +14,12 @@ type Input interface {
 
 type Parser interface {
 	conf.Configurable
-	Parse(string) (Event, error)
+	Parse(string) (*map[string]string, error)
 }
-
-type Event map[string]string
 
 type Reader interface {
 	conf.Configurable
-	Read(Event) error
+	Read(*map[string]string) error
 }
 
 type Lepsius struct {
@@ -40,16 +39,28 @@ func New(input Input, parser Parser, reader Reader) *Lepsius {
 func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {
 	var input Input
 	if _conf.Input.Name == "tail" {
-		input = &tail.Input{}
+		input = &_input.Tail{}
 	} else {
-		return nil, fmt.Errorf("Input %s not found", _conf.Input)
+		return nil, fmt.Errorf("Input %s not found", _conf.Input.Name)
 	}
 	err := input.Configure(_conf.Input.Args)
 	if err != nil {
 		return nil, err
 	}
+	var parser Parser
+	if _conf.Parser.Name == "grok" {
+		parser = &_parser.Grok{}
+	} else {
+		return nil, fmt.Errorf("Filter %s not not found", _conf.Parser.Name)
+	}
+	err = parser.Configure(_conf.Parser.Args)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Lepsius{
-		input: input,
+		input:  input,
+		parser: parser,
 	}, nil
 }
 

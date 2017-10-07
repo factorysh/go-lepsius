@@ -15,6 +15,12 @@ input:
   args:
     path: /tmp/toto
 
+parser:
+  name: grok
+  args:
+    pattern: |
+      %{HAPROXYHTTP}
+
 `), &book)
 	if err != nil {
 		t.Error(err)
