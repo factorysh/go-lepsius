@@ -54,10 +54,10 @@ func (g *Grok) Configure(conf map[string]interface{}) error {
 	return nil
 }
 
-func (g *Grok) Parse(line string) (*map[string]string, error) {
+func (g *Grok) Parse(line string) (map[string]string, error) {
 	v, err := g.grok.Parse(g.pattern, line)
 	if err != nil {
 		return nil, err
 	}
-	return &v, nil
+	return v, nil
 }

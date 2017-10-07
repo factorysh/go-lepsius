@@ -4,31 +4,17 @@ import (
 	"fmt"
 	"github.com/bearstech/go-lepsius/conf"
 	_input "github.com/bearstech/go-lepsius/input"
+	"github.com/bearstech/go-lepsius/model"
 	_parser "github.com/bearstech/go-lepsius/parser"
 )
 
-type Input interface {
-	conf.Configurable
-	Lines() chan string
-}
-
-type Parser interface {
-	conf.Configurable
-	Parse(string) (*map[string]string, error)
-}
-
-type Reader interface {
-	conf.Configurable
-	Read(*map[string]string) error
-}
-
 type Lepsius struct {
-	input  Input
-	parser Parser
-	reader Reader
+	input  model.Input
+	parser model.Parser
+	reader model.Reader
 }
 
-func New(input Input, parser Parser, reader Reader) *Lepsius {
+func New(input model.Input, parser model.Parser, reader model.Reader) *Lepsius {
 	return &Lepsius{
 		input,
 		parser,
@@ -37,7 +23,7 @@ func New(input Input, parser Parser, reader Reader) *Lepsius {
 }
 
 func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {
-	var input Input
+	var input model.Input
 	if _conf.Input.Name == "tail" {
 		input = &_input.Tail{}
 	} else {
@@ -47,7 +33,7 @@ func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {
 	if err != nil {
 		return nil, err
 	}
-	var parser Parser
+	var parser model.Parser
 	if _conf.Parser.Name == "grok" {
 		parser = &_parser.Grok{}
 	} else {
@@ -66,10 +52,15 @@ func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {
 
 func (l *Lepsius) Serve() error {
 	for line := range l.input.Lines() {
-		event, err := l.parser.Parse(line)
+		event, err := l.parser.Parse(line.Message)
 		if err != nil {
 			// log something
 		} else {
+			if line.Values != nil {
+				for k, v := range line.Values {
+					event[k] = v
+				}
+			}
 			err = l.reader.Read(event)
 			if err != nil {
 				// log something

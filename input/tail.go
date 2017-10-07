@@ -2,6 +2,7 @@ package input
 
 import (
 	"errors"
+	"github.com/bearstech/go-lepsius/model"
 	_tail "github.com/hpcloud/tail"
 )
 
@@ -9,11 +10,13 @@ type Tail struct {
 	tail *_tail.Tail
 }
 
-func (i *Tail) Lines() chan string {
-	lines := make(chan string)
+func (i *Tail) Lines() chan *model.Line {
+	lines := make(chan *model.Line)
 	go func() {
 		for line := range i.tail.Lines {
-			lines <- line.Text
+			lines <- &model.Line{
+				Message: line.Text,
+			}
 		}
 	}()
 	return lines
