@@ -1,15 +1,13 @@
-hash: fac2ac89ca0051b37021abdbd85f2f40ee5e4c00099e4b5f7b8a615b9a9378c9
-updated: 2017-10-06T23:44:56.966988519+02:00
+hash: 0fd98f0b86a775432d7e1dab0180caae6083c0330dc09ef7c90eff11ba748860
+updated: 2017-10-06T23:54:31.324054234+02:00
 imports:
 - name: github.com/hpcloud/tail
-  version: 37f4271387456dd1bf82ab1ad9229f060cc45386
+  version: a30252cb686a21eb2d0b98132633053ec2f7f1e5
   subpackages:
   - ratelimiter
   - util
   - watch
   - winfile
-- name: github.com/influxdata/tail
-  version: a30252cb686a21eb2d0b98132633053ec2f7f1e5
 - name: github.com/vjeantet/grok
   version: ce01e59abcf6fbc9833b7deb5e4b8ee1769bcc53
 - name: gopkg.in/fsnotify.v1
