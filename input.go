@@ -9,17 +9,10 @@ import (
 )
 
 type Lepsius struct {
-	input  model.Input
-	parser model.Parser
-	reader model.Reader
-}
-
-func New(input model.Input, parser model.Parser, reader model.Reader) *Lepsius {
-	return &Lepsius{
-		input,
-		parser,
-		reader,
-	}
+	input   model.Input
+	parser  model.Parser
+	filters []model.Filter
+	reader  model.Reader
 }
 
 func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {

@@ -13,6 +13,10 @@ type Book struct {
 		Name string
 		Args map[string]interface{}
 	}
+	Filters []struct {
+		Name string
+		Args map[string]interface{}
+	}
 	Reader struct {
 		Name string
 		Args map[string]interface{}

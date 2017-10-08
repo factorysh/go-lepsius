@@ -19,6 +19,11 @@ type Parser interface {
 	Parse(string) (map[string]string, error)
 }
 
+type Filter interface {
+	conf.Configurable
+	Filter(map[string]string) (map[string]string, error)
+}
+
 type Reader interface {
 	conf.Configurable
 	Read(map[string]string) error
