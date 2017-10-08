@@ -1,7 +1,7 @@
 package input
 
 import (
-	"errors"
+	_conf "github.com/bearstech/go-lepsius/conf"
 	"github.com/bearstech/go-lepsius/model"
 	_tail "github.com/hpcloud/tail"
 )
@@ -23,13 +23,9 @@ func (i *Tail) Lines() chan *model.Line {
 }
 
 func (i *Tail) Configure(conf map[string]interface{}) error {
-	path_raw, ok := conf["path"]
-	if !ok {
-		return errors.New("path key is mandatory")
-	}
-	path, ok := path_raw.(string)
-	if !ok {
-		return errors.New("path type must be a string")
+	path, _, err := _conf.ParseString(conf, "path", true)
+	if err != nil {
+		return err
 	}
 	tail, err := _tail.TailFile(path, _tail.Config{Follow: true})
 	if err == nil {

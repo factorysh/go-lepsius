@@ -1,7 +1,7 @@
 package parser
 
 import (
-	"errors"
+	_conf "github.com/bearstech/go-lepsius/conf"
 	"github.com/vjeantet/grok"
 )
 
@@ -30,12 +30,11 @@ func (g *Grok) Configure(conf map[string]interface{}) error {
 		return err
 	}
 
-	patterns_raw, ok := conf["patterns"]
+	patterns, ok, err := _conf.ParseMapStringString(conf, "patterns", false)
+	if err != nil {
+		return err
+	}
 	if ok {
-		patterns, ok := patterns_raw.(map[string]string)
-		if !ok {
-			return errors.New("patterns must be a map of strings")
-		}
 		for k, v := range patterns {
 			err = g.grok.AddPattern(k, v)
 			if err != nil {
@@ -43,15 +42,8 @@ func (g *Grok) Configure(conf map[string]interface{}) error {
 			}
 		}
 	}
-	pattern_raw, ok := conf["pattern"]
-	if !ok {
-		return errors.New("pattern is mandatory")
-	}
-	g.pattern, ok = pattern_raw.(string)
-	if !ok {
-		return errors.New("pattern must be a string")
-	}
-	return nil
+	g.pattern, _, err = _conf.ParseString(conf, "pattern", true)
+	return err
 }
 
 func (g *Grok) Parse(line string) (map[string]string, error) {
