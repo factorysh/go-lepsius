@@ -2,6 +2,7 @@ package conf
 
 import (
 	"fmt"
+	"time"
 )
 
 type Book struct {
@@ -71,6 +72,22 @@ func ParseInt(conf map[string]interface{}, key string, mandatory bool) (int, boo
 	value, ok := raw.(int)
 	if !ok {
 		return 0, false, fmt.Errorf("%s must be an integer", key)
+	}
+	return value, true, nil
+}
+
+func ParseTime(conf map[string]interface{}, key string, mandatory bool) (*time.Time, bool, error) {
+	raw, ok := conf[key]
+	if !ok {
+		if mandatory {
+			return nil, false, fmt.Errorf("%s is mandatory", key)
+		} else {
+			return nil, false, nil
+		}
+	}
+	value, ok := raw.(*time.Time)
+	if !ok {
+		return nil, false, fmt.Errorf("%s must be a time.Time, did you parse it?", key)
 	}
 	return value, true, nil
 }

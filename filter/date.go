@@ -40,6 +40,6 @@ func (d *DateParser) Filter(conf map[string]interface{}) error {
 			t = t.AddDate(n.Year(), 0, 0)
 		}
 	}
-	conf[d.field] = t
+	conf[d.field] = &t
 	return err
 }
