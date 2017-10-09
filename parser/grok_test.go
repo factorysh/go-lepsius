@@ -11,17 +11,17 @@ func TestGrok(t *testing.T) {
 	var book conf.Book
 	err := yaml.Unmarshal([]byte(`---
 
-filter:
-  name: grok
-  args:
-    pattern: %{HAPROXYHTTP}
+filters:
+ - name: grok
+   args:
+     pattern: "%{HAPROXYHTTP}"
 
 `), &book)
 	if err != nil {
 		t.Error(err)
 	}
 	g := &Grok{}
-	err = g.Configure(book.Filter.Args)
+	err = g.Configure(book.Filters[0].Args)
 	if err != nil {
 		t.Error(err)
 	}
