@@ -28,6 +28,18 @@ func (d *DateParser) Filter(conf map[string]interface{}) error {
 	if err != nil {
 		return err
 	}
-	conf[d.field], err = time.Parse(d.layout, raw)
+	t, err := time.Parse(d.layout, raw)
+	if err != nil {
+		return err
+	}
+	if t.Year() == 0 {
+		n := time.Now()
+		if n.Month() > t.Month() {
+			t = t.AddDate(n.Year()-1, 0, 0)
+		} else {
+			t = t.AddDate(n.Year(), 0, 0)
+		}
+	}
+	conf[d.field] = t
 	return err
 }
