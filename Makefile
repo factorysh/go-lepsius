@@ -15,6 +15,9 @@ vendor: | gopath/src/github.com/bearstech/go-lepsius
 
 test: gp
 	go test -v github.com/bearstech/go-lepsius
+	go test -v github.com/bearstech/go-lepsius/filter
+	go test -v github.com/bearstech/go-lepsius/parser
+	go test -v github.com/bearstech/go-lepsius/reader
 
 clean:
 	rm -rf gopath vendor
