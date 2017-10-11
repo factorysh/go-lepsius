@@ -87,7 +87,7 @@ func ParseTime(conf map[string]interface{}, key string, mandatory bool) (*time.T
 	}
 	value, ok := raw.(*time.Time)
 	if !ok {
-		return nil, false, fmt.Errorf("%s must be a time.Time, did you parse it?", key)
+		return nil, false, fmt.Errorf("%s must be a time.Time, did you parse it? : %s", key, raw)
 	}
 	return value, true, nil
 }
