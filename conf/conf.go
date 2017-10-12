@@ -91,3 +91,19 @@ func ParseTime(conf map[string]interface{}, key string, mandatory bool) (*time.T
 	}
 	return value, true, nil
 }
+
+func ParseArrayString(conf map[string]interface{}, key string, mandatory bool) ([]string, bool, error) {
+	raw, ok := conf[key]
+	if !ok {
+		if mandatory {
+			return nil, false, fmt.Errorf("%s is mandatory", key)
+		} else {
+			return nil, false, nil
+		}
+	}
+	value, ok := raw.([]string)
+	if !ok {
+		return nil, false, fmt.Errorf("%s must be an array of strings: %s", key, raw)
+	}
+	return value, true, nil
+}
