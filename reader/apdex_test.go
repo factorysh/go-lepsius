@@ -12,6 +12,7 @@ func TestApdex(t *testing.T) {
 		"status_key": "status",
 		"time_key":   "time",
 		"date_key":   "timestamp",
+		"tags":       []string{"host"},
 	})
 	if err != nil {
 		t.Error(err)
@@ -25,6 +26,7 @@ func TestApdex(t *testing.T) {
 		"status":    "200",
 		"timestamp": &now,
 		"time":      342,
+		"host":      "www.example.com",
 	})
 	if err != nil {
 		t.Error(err)

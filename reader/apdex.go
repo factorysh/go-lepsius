@@ -14,6 +14,7 @@ type Apdex struct {
 	time_key   string
 	date_key   string
 	events     chan *Event
+	tags       []string
 }
 
 type Event struct {
@@ -21,6 +22,7 @@ type Event struct {
 	Satisfied    uint32
 	Tolerating   uint32
 	NotSatisfied uint32
+	Tags         map[string]string
 }
 
 func (a *Apdex) Configure(conf map[string]interface{}) error {
@@ -29,16 +31,20 @@ func (a *Apdex) Configure(conf map[string]interface{}) error {
 	if err != nil {
 		return err
 	}
-	a.status_key, _, err = _conf.ParseString(conf, "status_key", false)
+	a.status_key, _, err = _conf.ParseString(conf, "status_key", true)
 	if err != nil {
 		return err
 	}
-	a.time_key, _, err = _conf.ParseString(conf, "time_key", false)
+	a.time_key, _, err = _conf.ParseString(conf, "time_key", true)
 	if err != nil {
 		return err
 	}
 	a.events = make(chan *Event)
-	a.date_key, _, err = _conf.ParseString(conf, "date_key", false)
+	a.date_key, _, err = _conf.ParseString(conf, "date_key", true)
+	if err != nil {
+		return err
+	}
+	a.tags, _, err = _conf.ParseArrayString(conf, "tags", false)
 	if err != nil {
 		return err
 	}
@@ -51,11 +57,15 @@ func (a *Apdex) Read(evt map[string]interface{}) error {
 		return err
 	}
 	status, _, err := _conf.ParseString(evt, a.status_key, true)
+	if err != nil {
+		return err
+	}
 	if len(status) != 3 {
 		return fmt.Errorf("Bad status lenght : %s", status)
 	}
 	event := &Event{
 		TimeStamp: timestamp,
+		Tags:      make(map[string]string),
 	}
 	switch s := status[0]; s {
 	case '1', '3', '4':
@@ -79,6 +89,12 @@ func (a *Apdex) Read(evt map[string]interface{}) error {
 		}
 	default:
 		return fmt.Errorf("Strange status : %s", status)
+	}
+	for _, tag := range a.tags {
+		event.Tags[tag], _, err = _conf.ParseString(evt, tag, false)
+		if err != nil {
+			return err
+		}
 	}
 	a.events <- event
 	return nil
