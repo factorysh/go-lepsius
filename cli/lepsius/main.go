@@ -2,22 +2,24 @@ package main
 
 import (
 	"github.com/bearstech/go-lepsius"
-	"gopkg.in/mcuadros/go-syslog.v2"
+	"github.com/bearstech/go-lepsius/conf"
+	"os"
 )
 
 func main() {
-	handler, err := lepsius.NewHandler("%{HAPROXYHTTPDIRECT}")
+	book, err := conf.ReadFile(os.Args[1])
 	if err != nil {
 		panic(err)
 	}
 
-	server := syslog.NewServer()
-	server.SetFormat(syslog.Automatic)
-	server.SetHandler(handler)
-	err = server.ListenUDP("0.0.0.0:1514")
+	l, err := lepsius.LepsiusFromBook(book)
 	if err != nil {
 		panic(err)
 	}
-	server.Boot()
-	server.Wait()
+
+	err = l.Serve()
+	if err != nil {
+		panic(err)
+	}
+
 }
