@@ -1,28 +1,24 @@
 .PHONY: poc
-export GOPATH=$(shell pwd)/gopath
 
-build: gp
-	cd gopath/src/github.com/bearstech/go-lepsius && go build ./cli/lepsius
+build: | vendor bin
+	go build -o bin/lepsius ./cli/lepsius
 
-gopath/src/github.com/bearstech/go-lepsius:
-	mkdir -p gopath/src/github.com/bearstech/
-	ln -sf ../../../.. gopath/src/github.com/bearstech/go-lepsius
+bin:
+	mkdir -p bin
 
-gp: | vendor
-
-vendor: | gopath/src/github.com/bearstech/go-lepsius
+vendor:
 	glide install
 
-test: gp
+test: | vendor
 	go test -v github.com/bearstech/go-lepsius
 	go test -v github.com/bearstech/go-lepsius/filter
 	go test -v github.com/bearstech/go-lepsius/parser
 	go test -v github.com/bearstech/go-lepsius/reader
 
 clean:
-	rm -rf gopath vendor
+	rm -rf vendor
 
-poc: gp
+poc: | vendor
 	rm -f gopath/src/github.com/bearstech/go-lepsius
 	ln -s /go/ gopath/src/github.com/bearstech/go-lepsius
 	docker run -it --rm -v `pwd`:/go -e GOPATH=/go/gopath golang go build -o poc/lepsius ./cli/lepsius
