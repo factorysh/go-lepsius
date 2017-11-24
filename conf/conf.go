@@ -2,8 +2,19 @@ package conf
 
 import (
 	"fmt"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 	"time"
 )
+
+func ReadFile(path string) (book *Book, err error) {
+	raw, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	err = yaml.Unmarshal(raw, book)
+	return book, err
+}
 
 type Book struct {
 	Input struct {
