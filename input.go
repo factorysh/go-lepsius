@@ -17,9 +17,10 @@ type Lepsius struct {
 
 func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {
 	var input model.Input
-	if _conf.Input.Name == "tail" {
+	switch _conf.Input.Name {
+	case "tail":
 		input = &_input.Tail{}
-	} else {
+	default:
 		return nil, fmt.Errorf("Input %s not found", _conf.Input.Name)
 	}
 	err := input.Configure(_conf.Input.Args)
