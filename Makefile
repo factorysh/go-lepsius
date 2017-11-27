@@ -15,6 +15,10 @@ test: | vendor
 	go test -v github.com/bearstech/go-lepsius/parser
 	go test -v github.com/bearstech/go-lepsius/reader
 
+src/logstash-patterns-core:
+	mkdir -p src
+	cd src && git clone https://github.com/logstash-plugins/logstash-patterns-core.git
+
 clean:
 	rm -rf vendor
 

@@ -25,17 +25,20 @@ func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {
 	}
 	err := input.Configure(_conf.Input.Args)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Section: Input Conf: %s %s", _conf.Input.Args,
+			err.Error())
 	}
 	var parser model.Parser
-	if _conf.Parser.Name == "grok" {
+	switch _conf.Parser.Name {
+	case "grok":
 		parser = &_parser.Grok{}
-	} else {
-		return nil, fmt.Errorf("Filter %s not not found", _conf.Parser.Name)
+	default:
+		return nil, fmt.Errorf("Parser %s not not found", _conf.Parser.Name)
 	}
 	err = parser.Configure(_conf.Parser.Args)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Section: Parser Conf:%s %s", _conf.Parser.Args,
+			err.Error())
 	}
 
 	return &Lepsius{

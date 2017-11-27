@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/bearstech/go-lepsius"
 	"github.com/bearstech/go-lepsius/conf"
+	"github.com/bearstech/go-lepsius/lepsius"
 	"os"
 )
 

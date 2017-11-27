@@ -30,6 +30,17 @@ func (g *Grok) Configure(conf map[string]interface{}) error {
 		return err
 	}
 
+	path, ok, err := _conf.ParseString(conf, "path", false)
+	if err != nil {
+		return err
+	}
+	if ok {
+		err = g.grok.AddPatternsFromPath(path)
+		if err != nil {
+			return err
+		}
+	}
+
 	patterns, ok, err := _conf.ParseMapStringString(conf, "patterns", false)
 	if err != nil {
 		return err

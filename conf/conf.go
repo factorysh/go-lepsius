@@ -7,11 +7,16 @@ import (
 	"time"
 )
 
-func ReadFile(path string) (book *Book, err error) {
+func ReadFile(path string) (*Book, error) {
 	raw, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
+	book := &Book{}
+	book.Input.Args = make(map[string]interface{})
+	book.Parser.Args = make(map[string]interface{})
+	book.Reader.Args = make(map[string]interface{})
+
 	err = yaml.Unmarshal(raw, book)
 	return book, err
 }
@@ -19,20 +24,20 @@ func ReadFile(path string) (book *Book, err error) {
 type Book struct {
 	Input struct {
 		Name string                 `yaml:"name"`
-		Args map[string]interface{} `yaml:"args"`
+		Args map[string]interface{} `yaml:"args,omitempty"`
 	} `yaml:"input"`
 	Parser struct {
-		Name string
-		Args map[string]interface{}
-	}
+		Name string                 `yaml:"name"`
+		Args map[string]interface{} `yaml:"args,omitempty"`
+	} `yaml:"parser"`
 	Filters []struct {
-		Name string
-		Args map[string]interface{}
-	}
+		Name string                 `yaml:"name"`
+		Args map[string]interface{} `yaml:"args,omitempty"`
+	} `yaml:"filters"`
 	Reader struct {
-		Name string
-		Args map[string]interface{}
-	}
+		Name string                 `yaml:"name"`
+		Args map[string]interface{} `yaml:"args,omitempty"`
+	} `yaml:"reader"`
 }
 
 type Configurable interface {
@@ -43,7 +48,7 @@ func ParseString(conf map[string]interface{}, key string, mandatory bool) (strin
 	raw, ok := conf[key]
 	if !ok {
 		if mandatory {
-			return "", false, fmt.Errorf("%s is mandatory", key)
+			return "", false, fmt.Errorf("%s is mandatory in %s", key, conf)
 		} else {
 			return "", false, nil
 		}
