@@ -7,7 +7,7 @@ bin:
 	mkdir -p bin
 
 vendor:
-	glide install
+	dep ensure
 
 test: | vendor
 	go test -v github.com/bearstech/go-lepsius
