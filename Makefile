@@ -27,3 +27,11 @@ poc: | vendor
 	ln -s /go/ gopath/src/github.com/bearstech/go-lepsius
 	docker run -it --rm -v `pwd`:/go -e GOPATH=/go/gopath golang go build -o poc/lepsius ./cli/lepsius
 	rm -f gopath/src/github.com/bearstech/go-lepsius
+
+linux: | vendor
+	mkdir -p bin/linux
+	docker run --rm \
+	-v `pwd`:/go/src/github.com/bearstech/go-lepsius \
+	-w /go/src/github.com/bearstech/go-lepsius \
+	golang:latest \
+	go build -o bin/linux/lepsius ./cli/lepsius
