@@ -1,7 +1,7 @@
 package reader
 
 import (
-	"fmt"
+	"github.com/davecgh/go-spew/spew"
 )
 
 type Stdout struct {
@@ -12,6 +12,6 @@ func (s *Stdout) Configure(conf map[string]interface{}) error {
 }
 
 func (s *Stdout) Read(evt map[string]interface{}) error {
-	fmt.Println(evt)
+	spew.Dump(evt)
 	return nil
 }
