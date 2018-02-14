@@ -16,15 +16,15 @@ type Input interface {
 
 type Parser interface {
 	conf.Configurable
-	Parse(string) (map[string]string, error)
+	Parse(string) (map[string]interface{}, error)
 }
 
 type Filter interface {
 	conf.Configurable
-	Filter(map[string]string) (map[string]string, error)
+	Filter(map[string]interface{}) (map[string]interface{}, error)
 }
 
 type Reader interface {
 	conf.Configurable
-	Read(map[string]string) error
+	Read(map[string]interface{}) error
 }
