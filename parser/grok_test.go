@@ -64,5 +64,5 @@ filters:
 	assert.Equal(t, "1ms", v["chrono"], "")
 	assert.Equal(t, "200", v["response"], "")
 	assert.Equal(t, "/images/logo.png", v["request"], "")
-	assert.Equal(t, "https://preprod.docs.factory.sh/", v["referrer"])
+	assert.Equal(t, `"https://preprod.docs.factory.sh/"`, v["referrer"])
 }
