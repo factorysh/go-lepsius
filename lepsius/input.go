@@ -32,6 +32,8 @@ func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {
 	switch _conf.Parser.Name {
 	case "grok":
 		parser = &_parser.Grok{}
+	case "json":
+		parser = &_parser.Json{}
 	default:
 		return nil, fmt.Errorf("Parser %s not not found", _conf.Parser.Name)
 	}
