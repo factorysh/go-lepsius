@@ -6,6 +6,7 @@ import (
 	_input "github.com/bearstech/go-lepsius/input"
 	"github.com/bearstech/go-lepsius/model"
 	_parser "github.com/bearstech/go-lepsius/parser"
+	_reader "github.com/bearstech/go-lepsius/reader"
 )
 
 type Lepsius struct {
@@ -42,10 +43,25 @@ func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {
 		return nil, fmt.Errorf("Section: Parser Conf:%s %s", _conf.Parser.Args,
 			err.Error())
 	}
+	var reader model.Reader
+	switch _conf.Reader.Name {
+	case "stdout":
+		reader = &_reader.Stdout{}
+	case "apdex":
+		reader = &_reader.Apdex{}
+	default:
+		return nil, fmt.Errorf("Reader %s not not found", _conf.Reader.Name)
+	}
+	err = reader.Configure(_conf.Reader.Args)
+	if err != nil {
+		return nil, fmt.Errorf("Section: Reader Conf:%s %s", _conf.Reader.Args,
+			err.Error())
+	}
 
 	return &Lepsius{
 		input:  input,
 		parser: parser,
+		reader: reader,
 	}, nil
 }
 
