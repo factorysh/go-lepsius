@@ -4,6 +4,7 @@ import (
 	_conf "github.com/bearstech/go-lepsius/conf"
 	"github.com/bearstech/go-lepsius/model"
 	_tail "github.com/hpcloud/tail"
+	"github.com/mitchellh/mapstructure"
 )
 
 type Tail struct {
@@ -22,12 +23,17 @@ func (i *Tail) Lines() chan *model.Line {
 	return lines
 }
 
+type TailConf struct {
+	path string
+}
+
 func (i *Tail) Configure(conf map[string]interface{}) error {
-	path, _, err := _conf.ParseString(conf, "path", true)
+	var conf TailConf
+	err := mapstructure.Decode(conf, &conf)
 	if err != nil {
 		return err
 	}
-	tail, err := _tail.TailFile(path, _tail.Config{Follow: true})
+	tail, err := _tail.TailFile(conf.path, _tail.Config{Follow: true})
 	if err == nil {
 		i.tail = tail
 	}
