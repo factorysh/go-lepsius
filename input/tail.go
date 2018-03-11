@@ -1,7 +1,6 @@
 package input
 
 import (
-	_conf "github.com/bearstech/go-lepsius/conf"
 	"github.com/bearstech/go-lepsius/model"
 	_tail "github.com/hpcloud/tail"
 	"github.com/mitchellh/mapstructure"
@@ -28,12 +27,12 @@ type TailConf struct {
 }
 
 func (i *Tail) Configure(conf map[string]interface{}) error {
-	var conf TailConf
-	err := mapstructure.Decode(conf, &conf)
+	var tailconf TailConf
+	err := mapstructure.Decode(conf, &tailconf)
 	if err != nil {
 		return err
 	}
-	tail, err := _tail.TailFile(conf.path, _tail.Config{Follow: true})
+	tail, err := _tail.TailFile(tailconf.path, _tail.Config{Follow: true})
 	if err == nil {
 		i.tail = tail
 	}
