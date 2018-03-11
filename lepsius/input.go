@@ -23,6 +23,8 @@ func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {
 		input = &_input.Tail{}
 	case "stdin":
 		input = &_input.Stdin{}
+	case "journald":
+		input = &_input.Journald{}
 	default:
 		return nil, fmt.Errorf("Input %s not found", _conf.Input.Name)
 	}
