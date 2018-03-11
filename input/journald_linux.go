@@ -1,10 +1,10 @@
 package input
 
 import (
-	_conf "github.com/bearstech/go-lepsius/conf"
 	"github.com/bearstech/go-lepsius/model"
 	"github.com/coreos/go-systemd/sdjournal"
 	"github.com/mitchellh/mapstructure"
+	"time"
 )
 
 type Journald struct {
