@@ -29,11 +29,11 @@ type Book struct {
 	Parser struct {
 		Name string                 `yaml:"name"`
 		Args map[string]interface{} `yaml:"args,omitempty"`
-	} `yaml:"parser"`
+	} `yaml:"parser,omitempty"`
 	Filters []struct {
 		Name string                 `yaml:"name"`
 		Args map[string]interface{} `yaml:"args,omitempty"`
-	} `yaml:"filters"`
+	} `yaml:"filters,omitempty"`
 	Reader struct {
 		Name string                 `yaml:"name"`
 		Args map[string]interface{} `yaml:"args,omitempty"`

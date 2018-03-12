@@ -39,13 +39,13 @@ func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {
 		parser = &_parser.Grok{}
 	case "json":
 		parser = &_parser.Json{}
-	default:
-		return nil, fmt.Errorf("Parser %s not not found", _conf.Parser.Name)
 	}
-	err = parser.Configure(_conf.Parser.Args)
-	if err != nil {
-		return nil, fmt.Errorf("Section: Parser Conf:%s %s", _conf.Parser.Args,
-			err.Error())
+	if _conf.Parser.Name != "" {
+		err = parser.Configure(_conf.Parser.Args)
+		if err != nil {
+			return nil, fmt.Errorf("Section: Parser Conf:%s %s", _conf.Parser.Args,
+				err.Error())
+		}
 	}
 	var reader model.Reader
 	switch _conf.Reader.Name {
