@@ -1,10 +1,10 @@
 package input
 
 import (
-	_conf "github.com/bearstech/go-lepsius/conf"
 	"github.com/bearstech/go-lepsius/model"
 	//"gopkg.in/mcuadros/go-syslog.v2/format"
 	"fmt"
+	"github.com/mitchellh/mapstructure"
 	"gopkg.in/mcuadros/go-syslog.v2"
 	"net/url"
 )
@@ -21,13 +21,20 @@ const (
 	unix
 )
 
-func (s *Syslog) Configure(conf map[string]interface{}) error {
-	listen, _, err := _conf.ParseString(conf, "listen", true)
-	u, err := url.Parse(listen)
+type SyslogConf struct {
+	listen string
+}
+
+func (s *Syslog) Configure(c map[string]interface{}) error {
+	var conf SyslogConf
+	err := mapstructure.Decode(c, &conf)
 	if err != nil {
 		return err
 	}
-	fmt.Println(u)
+	u, err := url.Parse(conf.listen)
+	if err != nil {
+		return err
+	}
 	switch u.Scheme {
 	case "udp":
 		s.protocol = udp
