@@ -33,5 +33,8 @@ linux: | vendor
 	docker run --rm \
 	-v `pwd`:/go/src/github.com/bearstech/go-lepsius \
 	-w /go/src/github.com/bearstech/go-lepsius \
-	golang:latest \
+	lepsius-dev \
 	go build -o bin/linux/lepsius ./cli/lepsius
+
+image-tool:
+	docker build -t lepsius-dev contrib
