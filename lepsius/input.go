@@ -11,7 +11,6 @@ import (
 
 type Lepsius struct {
 	input   model.Input
-	parser  model.Parser
 	filters []model.Filter
 	reader  model.Reader
 }
@@ -64,28 +63,17 @@ func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {
 
 	return &Lepsius{
 		input:  input,
-		parser: parser,
 		reader: reader,
 	}, nil
 }
 
 func (l *Lepsius) Serve() error {
 	for line := range l.input.Lines() {
-		event, err := l.parser.Parse(line.Message)
+		err := l.reader.Read(line.Values)
 		if err != nil {
 			// log something
-		} else {
-			if line.Values != nil {
-				for k, v := range line.Values {
-					event[k] = v
-				}
-			}
-			err = l.reader.Read(event)
-			if err != nil {
-				// log something
-			}
-			// the line is correct
 		}
+		// the line is correct
 	}
 	return nil
 }

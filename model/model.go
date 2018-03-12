@@ -5,8 +5,7 @@ import (
 )
 
 type Line struct {
-	Message string
-	Values  map[string]string
+	Values map[string]interface{}
 }
 
 type Input interface {
@@ -16,12 +15,12 @@ type Input interface {
 
 type Parser interface {
 	conf.Configurable
-	Parse(string) (map[string]interface{}, error)
+	Parse([]byte) (map[string]interface{}, error)
 }
 
 type Filter interface {
 	conf.Configurable
-	Filter(map[string]interface{}) (map[string]interface{}, error)
+	Filter(*map[string]interface{}) error
 }
 
 type Reader interface {

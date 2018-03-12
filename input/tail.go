@@ -2,20 +2,29 @@ package input
 
 import (
 	"github.com/bearstech/go-lepsius/model"
+	"github.com/bearstech/go-lepsius/parser"
 	_tail "github.com/hpcloud/tail"
 	"github.com/mitchellh/mapstructure"
 )
 
 type Tail struct {
-	tail *_tail.Tail
+	tail   *_tail.Tail
+	config *TailConf
+	parser model.Parser
 }
 
 func (i *Tail) Lines() chan *model.Line {
 	lines := make(chan *model.Line)
 	go func() {
 		for line := range i.tail.Lines {
+			l, err := i.parser.Parse([]byte(line.Text))
+			if err != nil {
+				panic(err)
+			}
 			lines <- &model.Line{
-				Message: line.Text,
+				Values: map[string]interface{}{
+					"message": l,
+				},
 			}
 		}
 	}()
@@ -23,18 +32,22 @@ func (i *Tail) Lines() chan *model.Line {
 }
 
 type TailConf struct {
-	path string
+	path   string
+	parser string
 }
 
-func (i *Tail) Configure(conf map[string]interface{}) error {
-	var tailconf TailConf
-	err := mapstructure.Decode(conf, &tailconf)
+func (t *Tail) Configure(conf map[string]interface{}) error {
+	err := mapstructure.Decode(conf, t.config)
 	if err != nil {
 		return err
 	}
-	tail, err := _tail.TailFile(tailconf.path, _tail.Config{Follow: true})
-	if err == nil {
-		i.tail = tail
+	if t.config.parser == "" {
+		t.config.parser = "raw"
 	}
-	return err
+	t.tail, err = _tail.TailFile(t.config.path, _tail.Config{Follow: true})
+	if err != nil {
+		return err
+	}
+	t.parser = parser.Parser[t.config.parser]
+	return nil
 }

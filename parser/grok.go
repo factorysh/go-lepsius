@@ -6,6 +6,10 @@ import (
 	"github.com/vjeantet/grok"
 )
 
+func init() {
+	register("grok", &Grok{})
+}
+
 type Grok struct {
 	grok    *grok.Grok
 	pattern string
@@ -76,8 +80,8 @@ func (g *Grok) Configure(conf map[string]interface{}) error {
 	return err
 }
 
-func (g *Grok) Parse(line string) (map[string]interface{}, error) {
-	v, err := g.grok.Parse(g.pattern, line)
+func (g *Grok) Parse(line []byte) (map[string]interface{}, error) {
+	v, err := g.grok.Parse(g.pattern, string(line))
 	if err != nil {
 		return nil, err
 	}
