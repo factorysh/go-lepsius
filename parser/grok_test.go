@@ -26,7 +26,7 @@ filters:
 	if err != nil {
 		t.Error(err)
 	}
-	v, err := g.Parse(`78.40.125.71:36602 [29/Oct/2015:23:59:29.957] http-in~ httpd/backend1 2488/0/0/1313/3801 200 423 - - ---- 1/1/0/1/0 0/0 "GET /test.php HTTP/1.1"`)
+	v, err := g.Parse([]byte(`78.40.125.71:36602 [29/Oct/2015:23:59:29.957] http-in~ httpd/backend1 2488/0/0/1313/3801 200 423 - - ---- 1/1/0/1/0 0/0 "GET /test.php HTTP/1.1"`))
 	if err != nil {
 		t.Error(err)
 	}
@@ -53,7 +53,7 @@ filters:
 	if err != nil {
 		t.Error(err)
 	}
-	v, err := g.Parse(`151.127.44.139 - - [14/Feb/2018:14:21:21 +0000] "GET /images/logo.png HTTP/2.0" 200 77420 "https://preprod.docs.factory.sh/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:59.0) Gecko/20100101 Firefox/59.0" 4 "Host-preprod-docs-factory-sh-0" "http://172.18.0.2:8000" 1ms`)
+	v, err := g.Parse([]byte(`151.127.44.139 - - [14/Feb/2018:14:21:21 +0000] "GET /images/logo.png HTTP/2.0" 200 77420 "https://preprod.docs.factory.sh/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:59.0) Gecko/20100101 Firefox/59.0" 4 "Host-preprod-docs-factory-sh-0" "http://172.18.0.2:8000" 1ms`))
 	if err != nil {
 		t.Error(err)
 	}
