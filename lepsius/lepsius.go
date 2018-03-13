@@ -52,6 +52,9 @@ func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {
 		}
 		lepsius.filter = append(lepsius.filter, f)
 	}
+	if len(_conf.Output) == 0 {
+		return nil, errors.New("Without output, you will ear nothing")
+	}
 	for _, u := range _conf.Output {
 		err = u.Validate()
 		if err != nil {
@@ -75,6 +78,7 @@ func (l *Lepsius) Serve() error {
 		for _, r := range l.output {
 			err := r.Read(line.Values)
 			if err != nil {
+				fmt.Println(err)
 				// log something
 			}
 			// the line is correct
