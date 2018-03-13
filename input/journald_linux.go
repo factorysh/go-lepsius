@@ -47,7 +47,7 @@ func (j *Journald) Lines() chan *model.Line {
 }
 
 type JournaldConf struct {
-	since   time.Duration
+	Since   time.Duration
 	Matches map[string]string
 }
 
