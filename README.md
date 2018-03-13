@@ -1,15 +1,22 @@
 Lepsius
 =======
 
-Lepsius was the first modern reader of the "book of dead".
+[Karl Richard Lepsius](https://en.wikipedia.org/wiki/Karl_Richard_Lepsius)
+was the first modern reader of the
+[book of dead](https://en.wikipedia.org/wiki/Book_of_the_Dead).
 
 Lepsius convert logs into events.
 
- * [x] act as a syslog server
- * [ ] read haproxy logs
- * [ ] read postfix logs
- * [ ] push events to nsq
+Example
+-------
 
+    ---
+    input:
+      - journald:
+          matches:
+            SYSLOG_IDENTIFIER: sshd
+    output:
+      - stdout:
 
 License
 -------
