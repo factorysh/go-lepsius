@@ -51,4 +51,8 @@
 
 [[constraint]]
   branch = "master"
+  name = "github.com/athoune/yangtze"
+
+[[constraint]]
+  branch = "master"
   name = "github.com/getsentry/raven-go"
