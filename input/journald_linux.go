@@ -62,7 +62,8 @@ func (j *Journald) Configure(conf map[string]interface{}) error {
 		return err
 	}
 	for key, value := range jconf.Matches {
-		j.journal.AddMatch(fmt.Sprintf("%v=%v", strings.ToUpper(key), value))
+		m := fmt.Sprintf("%v=%v", strings.ToUpper(key), value)
+		j.journal.AddMatch(m)
 	}
 	err = j.journal.SeekTail()
 	if err != nil {
