@@ -30,8 +30,12 @@ func (j *Journald) loop(lines chan *model.Line) {
 		if err != nil {
 			panic(err)
 		}
+		l := make(map[string]interface{})
+		for k, v := range entry.Fields {
+			l[k] = v
+		}
 		lines <- &model.Line{
-			Message: entry.Fields["MESSAGE"],
+			Values: l,
 		}
 	}
 }
