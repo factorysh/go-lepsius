@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"errors"
 	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
@@ -13,31 +14,41 @@ func ReadFile(path string) (*Book, error) {
 		return nil, err
 	}
 	book := &Book{}
-	book.Input.Args = make(map[string]interface{})
-	book.Parser.Args = make(map[string]interface{})
-	book.Reader.Args = make(map[string]interface{})
+	book.Input = make([]Plugin, 0)
+	book.Filter = make([]Plugin, 0)
+	book.Output = make([]Plugin, 0)
 
 	err = yaml.Unmarshal(raw, book)
 	return book, err
 }
 
+type Plugin map[string]map[string]interface{}
+
 type Book struct {
-	Input struct {
-		Name string                 `yaml:"name"`
-		Args map[string]interface{} `yaml:"args,omitempty"`
-	} `yaml:"input"`
-	Parser struct {
-		Name string                 `yaml:"name"`
-		Args map[string]interface{} `yaml:"args,omitempty"`
-	} `yaml:"parser,omitempty"`
-	Filters []struct {
-		Name string                 `yaml:"name"`
-		Args map[string]interface{} `yaml:"args,omitempty"`
-	} `yaml:"filters,omitempty"`
-	Reader struct {
-		Name string                 `yaml:"name"`
-		Args map[string]interface{} `yaml:"args,omitempty"`
-	} `yaml:"reader"`
+	Input  []Plugin `yaml:"input"`
+	Filter []Plugin `yaml:"filter"`
+	Output []Plugin `yaml:"output"`
+}
+
+func (p Plugin) Validate() error {
+	if len(p) > 1 {
+		return errors.New("Your object must be flat, with just one key")
+	}
+	return nil
+}
+
+func (p Plugin) Name() string {
+	for k, _ := range p {
+		return k
+	}
+	return ""
+}
+
+func (p Plugin) Args() map[string]interface{} {
+	for _, v := range p {
+		return v
+	}
+	return make(map[string]interface{})
 }
 
 type Configurable interface {

@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"github.com/bearstech/go-lepsius/conf"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 	"testing"
@@ -9,20 +8,17 @@ import (
 
 func TestGrokHAproxy(t *testing.T) {
 
-	var book conf.Book
+	var args map[string]interface{}
 	err := yaml.Unmarshal([]byte(`---
 
-filters:
- - name: grok
-   args:
-     pattern: "%{HAPROXYHTTP}"
+pattern: "%{HAPROXYHTTP}"
 
-`), &book)
+`), &args)
 	if err != nil {
 		t.Error(err)
 	}
 	g := &Grok{}
-	err = g.Configure(book.Filters[0].Args)
+	err = g.Configure(args)
 	if err != nil {
 		t.Error(err)
 	}
@@ -36,20 +32,17 @@ filters:
 }
 
 func TestGrokTraefikCLF(t *testing.T) {
-	var book conf.Book
+	var args map[string]interface{}
 	err := yaml.Unmarshal([]byte(`---
 
-filters:
- - name: grok
-   args:
-     pattern: "%{TRAEFIKCLF}"
+pattern: "%{TRAEFIKCLF}"
 
-`), &book)
+`), &args)
 	if err != nil {
 		t.Error(err)
 	}
 	g := &Grok{}
-	err = g.Configure(book.Filters[0].Args)
+	err = g.Configure(args)
 	if err != nil {
 		t.Error(err)
 	}

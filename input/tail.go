@@ -7,6 +7,10 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
+func init() {
+	register("tail", &Tail{})
+}
+
 type Tail struct {
 	tail   *_tail.Tail
 	config *TailConf
@@ -37,13 +41,15 @@ type TailConf struct {
 }
 
 func (t *Tail) Configure(conf map[string]interface{}) error {
-	err := mapstructure.Decode(conf, t.config)
+	cfg := &TailConf{}
+	err := mapstructure.Decode(conf, cfg)
 	if err != nil {
 		return err
 	}
-	if t.config.parser == "" {
-		t.config.parser = "raw"
+	if cfg.parser == "" {
+		cfg.parser = "raw"
 	}
+	t.config = cfg
 	t.tail, err = _tail.TailFile(t.config.path, _tail.Config{Follow: true})
 	if err != nil {
 		return err

@@ -13,7 +13,8 @@ test: | vendor
 	go test -v github.com/bearstech/go-lepsius
 	go test -v github.com/bearstech/go-lepsius/filter
 	go test -v github.com/bearstech/go-lepsius/parser
-	go test -v github.com/bearstech/go-lepsius/reader
+	go test -v github.com/bearstech/go-lepsius/output
+	go test -v github.com/bearstech/go-lepsius/input
 
 src/logstash-patterns-core:
 	mkdir -p src

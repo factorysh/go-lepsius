@@ -8,6 +8,10 @@ import (
 	"os"
 )
 
+func init() {
+	register("stdin", &Stdin{})
+}
+
 type Stdin struct {
 	config *StdinConf
 	parser model.Parser
@@ -38,13 +42,15 @@ func (s *Stdin) Lines() chan *model.Line {
 }
 
 func (s *Stdin) Configure(conf map[string]interface{}) error {
-	err := mapstructure.Decode(conf, s.config)
+	var cfg StdinConf
+	err := mapstructure.Decode(conf, &cfg)
 	if err != nil {
 		return err
 	}
-	if s.config.parser == "" {
-		s.config.parser = "raw"
+	if cfg.parser == "" {
+		cfg.parser = "raw"
 	}
-	s.parser = parser.Parser[s.config.parser]
+	s.config = &cfg
+	s.parser = parser.Parser[cfg.parser]
 	return nil
 }

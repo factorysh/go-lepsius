@@ -9,6 +9,10 @@ import (
 	"time"
 )
 
+func init() {
+	register("journald", &Journald{})
+}
+
 type Journald struct {
 	journal *sdjournal.Journal
 }

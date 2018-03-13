@@ -2,33 +2,34 @@ package filter
 
 import (
 	_conf "github.com/bearstech/go-lepsius/conf"
+	"github.com/mitchellh/mapstructure"
 	"time"
 )
 
+func init() {
+	register("dateparser", &DateParser{})
+}
+
 type DateParser struct {
+	config *DateParserConfig
+}
+
+type DateParserConfig struct {
 	field  string
 	layout string
 }
 
 func (d *DateParser) Configure(conf map[string]interface{}) error {
-	var err error
-	d.field, _, err = _conf.ParseString(conf, "field", false)
-	if err != nil {
-		return err
-	}
-	d.layout, _, err = _conf.ParseString(conf, "layout", false)
-	if err != nil {
-		return err
-	}
-	return nil
+	var c DateParserConfig
+	return mapstructure.Decode(conf, &c)
 }
 
-func (d *DateParser) Filter(conf map[string]interface{}) error {
-	raw, _, err := _conf.ParseString(conf, d.field, true)
+func (d *DateParser) Filter(line map[string]interface{}) error {
+	raw, _, err := _conf.ParseString(line, d.config.field, true)
 	if err != nil {
 		return err
 	}
-	t, err := time.Parse(d.layout, raw)
+	t, err := time.Parse(d.config.layout, raw)
 	if err != nil {
 		return err
 	}
@@ -40,6 +41,6 @@ func (d *DateParser) Filter(conf map[string]interface{}) error {
 			t = t.AddDate(n.Year(), 0, 0)
 		}
 	}
-	conf[d.field] = &t
+	line[d.config.field] = &t
 	return err
 }

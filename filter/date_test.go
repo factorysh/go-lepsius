@@ -6,7 +6,12 @@ import (
 )
 
 func TestHaproxy_date_format(t *testing.T) {
-	dp := &DateParser{"date", "Jan _2 15:04:05"}
+	dp := &DateParser{
+		config: &DateParserConfig{
+			field:  "date",
+			layout: "Jan _2 15:04:05",
+		},
+	}
 	conf := make(map[string]interface{})
 	conf["date"] = "Oct  8 21:40:39"
 	err := dp.Filter(conf)

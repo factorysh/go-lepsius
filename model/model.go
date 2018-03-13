@@ -20,10 +20,10 @@ type Parser interface {
 
 type Filter interface {
 	conf.Configurable
-	Filter(*map[string]interface{}) error
+	Filter(map[string]interface{}) error
 }
 
-type Reader interface {
+type Output interface {
 	conf.Configurable
 	Read(map[string]interface{}) error
 }

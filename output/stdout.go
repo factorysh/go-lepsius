@@ -1,8 +1,12 @@
-package reader
+package output
 
 import (
 	"github.com/davecgh/go-spew/spew"
 )
+
+func init() {
+	register("stdout", &Stdout{})
+}
 
 type Stdout struct {
 }

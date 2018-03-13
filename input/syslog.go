@@ -9,6 +9,10 @@ import (
 	"net/url"
 )
 
+func init() {
+	register("syslog", &Syslog{})
+}
+
 type Syslog struct {
 	protocol int
 	host     string
@@ -22,7 +26,7 @@ const (
 )
 
 type SyslogConf struct {
-	listen string
+	Listen string
 }
 
 func (s *Syslog) Configure(c map[string]interface{}) error {
@@ -31,7 +35,7 @@ func (s *Syslog) Configure(c map[string]interface{}) error {
 	if err != nil {
 		return err
 	}
-	u, err := url.Parse(conf.listen)
+	u, err := url.Parse(conf.Listen)
 	if err != nil {
 		return err
 	}

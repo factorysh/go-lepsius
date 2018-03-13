@@ -1,79 +1,84 @@
 package lepsius
 
 import (
+	"errors"
 	"fmt"
 	"github.com/bearstech/go-lepsius/conf"
+	_filter "github.com/bearstech/go-lepsius/filter"
 	_input "github.com/bearstech/go-lepsius/input"
 	"github.com/bearstech/go-lepsius/model"
-	_parser "github.com/bearstech/go-lepsius/parser"
-	_reader "github.com/bearstech/go-lepsius/reader"
+	_output "github.com/bearstech/go-lepsius/output"
 )
 
 type Lepsius struct {
-	input   model.Input
-	filters []model.Filter
-	reader  model.Reader
+	input  model.Input
+	filter []model.Filter
+	output []model.Output
 }
 
 func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {
-	var input model.Input
-	switch _conf.Input.Name {
-	case "tail":
-		input = &_input.Tail{}
-	case "stdin":
-		input = &_input.Stdin{}
-	case "journald":
-		input = &_input.Journald{}
-	default:
-		return nil, fmt.Errorf("Input %s not found", _conf.Input.Name)
-	}
-	err := input.Configure(_conf.Input.Args)
-	if err != nil {
-		return nil, fmt.Errorf("Section: Input Conf: %s %s", _conf.Input.Args,
-			err.Error())
-	}
-	var parser model.Parser
-	switch _conf.Parser.Name {
-	case "grok":
-		parser = &_parser.Grok{}
-	case "json":
-		parser = &_parser.Json{}
-	}
-	if _conf.Parser.Name != "" {
-		err = parser.Configure(_conf.Parser.Args)
-		if err != nil {
-			return nil, fmt.Errorf("Section: Parser Conf:%s %s", _conf.Parser.Args,
-				err.Error())
-		}
-	}
-	var reader model.Reader
-	switch _conf.Reader.Name {
-	case "stdout":
-		reader = &_reader.Stdout{}
-	case "apdex":
-		reader = &_reader.Apdex{}
-	default:
-		return nil, fmt.Errorf("Reader %s not not found", _conf.Reader.Name)
-	}
-	err = reader.Configure(_conf.Reader.Args)
-	if err != nil {
-		return nil, fmt.Errorf("Section: Reader Conf:%s %s", _conf.Reader.Args,
-			err.Error())
+	lepsius := &Lepsius{
+		filter: make([]model.Filter, 0),
+		output: make([]model.Output, 0),
 	}
 
-	return &Lepsius{
-		input:  input,
-		reader: reader,
-	}, nil
+	if len(_conf.Input) != 1 {
+		return nil, errors.New("You need one input")
+	}
+	i := _conf.Input[0]
+	input, ok := _input.Input[i.Name()]
+	if !ok {
+		return nil, fmt.Errorf("Unknown input : %s", i.Name())
+	}
+
+	err := input.Configure(i.Args())
+	if err != nil {
+		return nil, fmt.Errorf("Section: Input Conf: %s %s", i.Args(),
+			err.Error())
+	}
+	lepsius.input = input
+	for _, u := range _conf.Filter {
+		err = u.Validate()
+		if err != nil {
+			return nil, err
+		}
+		f, ok := _filter.Filter[u.Name()]
+		if !ok {
+			return nil, fmt.Errorf("Input unknown : %s", u.Name())
+		}
+		err = f.Configure(u.Args())
+		if err != nil {
+			return nil, fmt.Errorf("Input args for %s : %v", u.Name(), u.Args())
+		}
+		lepsius.filter = append(lepsius.filter, f)
+	}
+	for _, u := range _conf.Output {
+		err = u.Validate()
+		if err != nil {
+			return nil, err
+		}
+		f, ok := _output.Output[u.Name()]
+		if !ok {
+			return nil, fmt.Errorf("Output unknown : %s", u.Name())
+		}
+		err = f.Configure(u.Args())
+		if err != nil {
+			return nil, fmt.Errorf("Output args for %s : %v", u.Name(), u.Args())
+		}
+		lepsius.output = append(lepsius.output, f)
+	}
+	return lepsius, nil
 }
 
 func (l *Lepsius) Serve() error {
 	for line := range l.input.Lines() {
-		err := l.reader.Read(line.Values)
-		if err != nil {
-			// log something
+		for _, r := range l.output {
+			err := r.Read(line.Values)
+			if err != nil {
+				// log something
+			}
+			// the line is correct
 		}
-		// the line is correct
 	}
 	return nil
 }

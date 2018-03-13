@@ -1,4 +1,4 @@
-package reader
+package output
 
 // https://en.wikipedia.org/wiki/Apdex
 
@@ -7,6 +7,10 @@ import (
 	_conf "github.com/bearstech/go-lepsius/conf"
 	"time"
 )
+
+func init() {
+	register("apdex", &Apdex{})
+}
 
 type Apdex struct {
 	t          int

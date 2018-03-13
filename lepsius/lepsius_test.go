@@ -9,17 +9,15 @@ import (
 func TestFromBook(t *testing.T) {
 	var book conf.Book
 	err := yaml.Unmarshal([]byte(`---
-
 input:
-  name: tail
-  args:
-    path: /tmp/toto
+  - tail:
+      path: /tmp/toto
+      parser:
+        grok:
+          pattern: "%{HAPROXYHTTP}"
 
-parser:
-  name: grok
-  args:
-    pattern: |
-      %{HAPROXYHTTP}
+output:
+  - stdout:
 
 `), &book)
 	if err != nil {
