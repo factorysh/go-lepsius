@@ -6,7 +6,7 @@ import (
 )
 
 func TestJson(t *testing.T) {
-	j := Json{}
+	j := Filter["json"]
 	err := j.Configure(map[string]interface{}{
 		"field": "beuha",
 	})
