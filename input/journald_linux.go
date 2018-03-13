@@ -53,13 +53,7 @@ type JournaldConf struct {
 
 func (j *Journald) Configure(conf map[string]interface{}) error {
 	var jconf JournaldConf
-	decoder, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{
-		Result: &jconf,
-	})
-	if err != nil {
-		return err
-	}
-	err = decoder.Decode(conf)
+	err := mapstructure.Decode(conf, &jconf)
 	if err != nil {
 		return err
 	}
