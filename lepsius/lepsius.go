@@ -86,7 +86,7 @@ func (l *Lepsius) Serve() error {
 			}
 		}
 		for _, r := range l.output {
-			err = r.Read(line.Values)
+			err := r.Read(line.Values)
 			if err != nil {
 				fmt.Println(err)
 			}
