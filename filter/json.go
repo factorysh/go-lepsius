@@ -3,6 +3,7 @@ package filter
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/bearstech/go-lepsius/model"
 	"github.com/mitchellh/mapstructure"
 )
 
@@ -28,8 +29,8 @@ func (j *Json) Configure(conf map[string]interface{}) error {
 	return nil
 }
 
-func (j *Json) Filter(line map[string]interface{}) error {
-	raw, ok := line[j.Field]
+func (j *Json) Filter(line *model.Line) error {
+	raw, ok := line.Values[j.Field]
 	if ok {
 		f, ok := raw.(string)
 		if !ok {
@@ -40,7 +41,7 @@ func (j *Json) Filter(line map[string]interface{}) error {
 		if err != nil {
 			return err
 		}
-		line[j.Field] = kv
+		line.Values[j.Field] = kv
 	}
 	return nil
 }

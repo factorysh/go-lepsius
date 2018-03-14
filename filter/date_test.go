@@ -1,27 +1,27 @@
 package filter
 
 import (
-	_conf "github.com/bearstech/go-lepsius/conf"
+	"github.com/bearstech/go-lepsius/model"
+	"github.com/stretchr/testify/assert"
 	"testing"
+	"time"
 )
 
 func TestHaproxy_date_format(t *testing.T) {
 	dp := &DateParser{
 		config: &DateParserConfig{
-			field:  "date",
-			layout: "Jan _2 15:04:05",
+			Field:  "date",
+			Layout: "Jan _2 15:04:05",
 		},
 	}
-	conf := make(map[string]interface{})
-	conf["date"] = "Oct  8 21:40:39"
-	err := dp.Filter(conf)
-	if err != nil {
-		t.Error(err)
+	line := model.Line{
+		Values: map[string]interface{}{
+			"date": "Oct  8 21:40:39",
+		},
 	}
-	t.Log("Date format:", conf["date"])
-	tt, _, err := _conf.ParseTime(conf, "date", true)
-	if err != nil {
-		t.Error(err)
-	}
+	err := dp.Filter(&line)
+	assert.Nil(t, err)
+	tt, ok := line.Values["date"].(*time.Time)
+	assert.True(t, ok)
 	t.Log(tt)
 }

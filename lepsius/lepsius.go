@@ -75,13 +75,21 @@ func LepsiusFromBook(_conf *conf.Book) (*Lepsius, error) {
 
 func (l *Lepsius) Serve() error {
 	for line := range l.input.Lines() {
+		line.Keep = true
+		for _, f := range l.filter {
+			err := f.Filter(line)
+			if err == nil {
+				fmt.Println(err)
+			}
+			if !line.Keep {
+				break
+			}
+		}
 		for _, r := range l.output {
-			err := r.Read(line.Values)
+			err = r.Read(line.Values)
 			if err != nil {
 				fmt.Println(err)
-				// log something
 			}
-			// the line is correct
 		}
 	}
 	return nil

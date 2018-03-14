@@ -1,7 +1,8 @@
 package filter
 
 import (
-	_conf "github.com/bearstech/go-lepsius/conf"
+	"fmt"
+	"github.com/bearstech/go-lepsius/model"
 	"github.com/mitchellh/mapstructure"
 	"time"
 )
@@ -15,8 +16,8 @@ type DateParser struct {
 }
 
 type DateParserConfig struct {
-	field  string
-	layout string
+	Field  string
+	Layout string
 }
 
 func (d *DateParser) Configure(conf map[string]interface{}) error {
@@ -24,23 +25,26 @@ func (d *DateParser) Configure(conf map[string]interface{}) error {
 	return mapstructure.Decode(conf, &c)
 }
 
-func (d *DateParser) Filter(line map[string]interface{}) error {
-	raw, _, err := _conf.ParseString(line, d.config.field, true)
-	if err != nil {
-		return err
-	}
-	t, err := time.Parse(d.config.layout, raw)
-	if err != nil {
-		return err
-	}
-	if t.Year() == 0 {
-		n := time.Now()
-		if n.Month() > t.Month() {
-			t = t.AddDate(n.Year()-1, 0, 0)
-		} else {
-			t = t.AddDate(n.Year(), 0, 0)
+func (d *DateParser) Filter(line *model.Line) error {
+	raw, ok := line.Values[d.config.Field]
+	if ok {
+		f, ok := raw.(string)
+		if !ok {
+			return fmt.Errorf("Only string can be parsed as date: %v", raw)
 		}
+		t, err := time.Parse(d.config.Layout, f)
+		if err != nil {
+			return err
+		}
+		if t.Year() == 0 {
+			n := time.Now()
+			if n.Month() > t.Month() {
+				t = t.AddDate(n.Year()-1, 0, 0)
+			} else {
+				t = t.AddDate(n.Year(), 0, 0)
+			}
+		}
+		line.Values[d.config.Field] = &t
 	}
-	line[d.config.field] = &t
-	return err
+	return nil
 }

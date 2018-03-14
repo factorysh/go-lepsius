@@ -2,6 +2,7 @@ package filter
 
 import (
 	"github.com/athoune/yangtze/index"
+	"github.com/bearstech/go-lepsius/model"
 	"github.com/mitchellh/mapstructure"
 )
 
@@ -29,6 +30,6 @@ func (y *Yangtze) Configure(conf map[string]interface{}) error {
 	return nil
 }
 
-func (y *Yangtze) Filter(line map[string]interface{}) error {
+func (y *Yangtze) Filter(line *model.Line) error {
 	return nil
 }

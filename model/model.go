@@ -6,6 +6,7 @@ import (
 
 type Line struct {
 	Values map[string]interface{}
+	Keep   bool
 }
 
 type Input interface {
@@ -20,7 +21,7 @@ type Parser interface {
 
 type Filter interface {
 	conf.Configurable
-	Filter(map[string]interface{}) error
+	Filter(*Line) error
 }
 
 type Output interface {
