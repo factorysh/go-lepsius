@@ -56,3 +56,15 @@
 [[constraint]]
   branch = "master"
   name = "github.com/getsentry/raven-go"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/hashicorp/hil"
+
+[[constraint]]
+  name = "github.com/antonmedv/expr"
+  version = "1.0.3"
+
+[[constraint]]
+  name = "github.com/influxdata/kapacitor"
+  version = "1.5.1"
