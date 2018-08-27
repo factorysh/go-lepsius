@@ -16,13 +16,14 @@ var i = input
 		.parse(json)
 	|stdout()
 
+var fp = ['name', 'client']
 var i2 = input
 	|fromChan(chan)
 	|grok()
 		.source('message')
 		.match('%{NUMBER:duration} %{IP:client}')
 	|fingerprint()
-		.source(['name', 'client'])
+		.source(fp)
 		.target('uid')
 	|stdout()
 
@@ -49,7 +50,7 @@ var i2 = input
 	assert.NoError(t, err)
 	i2, ok := i2_.(*Stdout)
 	assert.True(t, ok)
-	assert.Len(t, i2.Input.Filters, 1)
+	assert.Len(t, i2.Input.Filters, 2)
 
 	c <- &Line{"beuha": "aussi"}
 	fmt.Println(i2)

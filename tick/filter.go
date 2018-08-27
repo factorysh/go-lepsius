@@ -28,14 +28,19 @@ func NewGrokFilter() *GrokFilter {
 
 type FingerprintFilter struct {
 	Node
-	Method string
-	Source []string
-	target string
+	Method     string
+	SourceList []string `tick:"Source" json:"source"`
+	Target     string
 }
 
 func (fp *FingerprintFilter) DoFilter(in *Line) (*Line, error) {
 	//TODO
 	return in, nil
+}
+
+func (fp *FingerprintFilter) Source(sources ...string) *FingerprintFilter {
+	fp.SourceList = append(fp.SourceList, sources...)
+	return fp
 }
 
 func NewFingerprintFilter() *FingerprintFilter {
