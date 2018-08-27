@@ -56,4 +56,7 @@ var i2 = input
 	assert.NoError(t, err)
 	c <- l
 	fmt.Println(i2)
+	l2, err := i2.Input.read()
+	assert.NoError(t, err)
+	fmt.Println(l2)
 }

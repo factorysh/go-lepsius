@@ -33,6 +33,17 @@ func (i *Input) FromChan(c chan *Line) *FromChan {
 	return fc
 }
 
+func (i *Input) read() (*Line, error) {
+	line := <-i.Events
+	for _, f := range i.Filters {
+		err := f.DoFilter(line)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return line, nil
+}
+
 func (n *Node) Grok() *GrokFilter {
 	gf := NewGrokFilter()
 	n.Input.Filters = append(n.Input.Filters, gf)
