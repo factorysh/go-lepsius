@@ -2,6 +2,7 @@ package tick
 
 import (
 	"crypto/sha1"
+	"encoding/base64"
 	"fmt"
 	"hash"
 	"io"
@@ -43,6 +44,7 @@ type FingerprintFilter struct {
 	Node
 	Method     string
 	SourceList []string `tick:"Source" json:"source"`
+	Format     string
 	Target     string
 }
 
@@ -56,7 +58,14 @@ func (fp *FingerprintFilter) DoFilter(in *Line) error {
 	for _, s := range fp.SourceList {
 		io.WriteString(hh, fmt.Sprintf("%v", in.Data[s]))
 	}
-	in.Data[fp.Target] = hh.Sum(nil)
+	var v interface{}
+	switch fp.Format {
+	case "base64":
+		v = base64.StdEncoding.EncodeToString(hh.Sum(nil))
+	default:
+		v = hh.Sum(nil)
+	}
+	in.Data[fp.Target] = v
 	return nil
 }
 
@@ -68,5 +77,6 @@ func (fp *FingerprintFilter) Source(sources ...string) *FingerprintFilter {
 func NewFingerprintFilter() *FingerprintFilter {
 	return &FingerprintFilter{
 		Method: "sha1",
+		Format: "base64",
 	}
 }
