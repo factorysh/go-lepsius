@@ -13,13 +13,27 @@ func TestTick(t *testing.T) {
 	script := `
 var i = input
 	|fromStdin()
+		.parse(json)
 	|stdout()
+
+var i2 = input
+	|fromChan(chan)
+	|grok()
+		.source('message')
+		.match('%{NUMBER:duration} %{IP:client}')
+	|fingerprint()
+		.source(['name', 'client'])
+		.target('uid')
+	|stdout()
+
 `
 	scope := stateful.NewScope()
-	input := &Input{
-		Test: true,
-	}
+	input := NewInput()
+	input.Test = true
+	c := make(chan *Line, 1)
 	scope.Set("input", input)
+	scope.Set("json", JsonParser)
+	scope.Set("chan", c)
 
 	r, err := tick.Evaluate(script, scope, nil, false)
 	assert.NoError(t, err)
@@ -31,4 +45,12 @@ var i = input
 	fmt.Println(s)
 	fmt.Println(s.Input.Test)
 
+	i2_, err := scope.Get("i2")
+	assert.NoError(t, err)
+	i2, ok := i2_.(*Stdout)
+	assert.True(t, ok)
+	assert.Len(t, i2.Input.Filters, 1)
+
+	c <- &Line{"beuha": "aussi"}
+	fmt.Println(i2)
 }

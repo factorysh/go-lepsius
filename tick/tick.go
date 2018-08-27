@@ -1,13 +1,21 @@
 package tick
 
-import (
-	"bufio"
-	"os"
-)
+type Node struct {
+	Input *Input
+}
 
 type Input struct {
-	Test  bool
-	Debug bool
+	Test    bool
+	Debug   bool
+	Filters []FilterNode
+}
+
+func NewInput() *Input {
+	return &Input{
+		Test:    false,
+		Debug:   false,
+		Filters: make([]FilterNode, 0),
+	}
 }
 
 func (i *Input) FromStdin() *FromStdin {
@@ -17,43 +25,31 @@ func (i *Input) FromStdin() *FromStdin {
 	return f
 }
 
-type Line map[string]interface{}
+func (i *Input) FromChan(c chan *Line) *FromChan {
+	fc := &FromChan{}
+	fc.Events = c
+	fc.Input = i
+	return fc
+}
 
-type Node struct {
-	Input  *Input
-	Events chan *Line
+func (n *Node) Grok() *GrokFilter {
+	gf := NewGrokFilter()
+	n.Input.Filters = append(n.Input.Filters, gf)
+	gf.Input = n.Input
+	return gf
+}
+
+func (n *Node) Fingerprint() *FingerprintFilter {
+	fp := NewFingerprintFilter()
+	n.Input.Filters = append(n.Input.Filters, fp)
+	fp.Input = n.Input
+	return fp
 }
 
 func (n *Node) Stdout() *Stdout {
 	s := &Stdout{}
-	s.Events = n.Events
 	s.Input = n.Input
 	return s
-}
-
-type Eventsable interface {
-	Events() chan *Line
-}
-
-type OutAble interface {
-	Out() chan *Line
-}
-
-type FromStdin struct {
-	Node
-}
-
-func (f *FromStdin) New() {
-	f.Events = make(chan *Line)
-	scanner := bufio.NewScanner(os.Stdin)
-	go func() {
-		for scanner.Scan() {
-			line := scanner.Bytes()
-			f.Events <- &Line{
-				"message": line,
-			}
-		}
-	}()
 }
 
 type Stdout struct {
