@@ -6,22 +6,21 @@ import (
 )
 
 type From struct {
-	Parse  Parser
-	Events chan *Line
+	Node
+	Parse Parser
 }
 
 type FromStdin struct {
-	Node
 	From
 }
 
 func (f *FromStdin) New() {
-	f.Events = make(chan *Line)
+	f.Input.Events = make(chan *Line)
 	scanner := bufio.NewScanner(os.Stdin)
 	go func() {
 		for scanner.Scan() {
 			line := scanner.Bytes()
-			f.Events <- &Line{
+			f.Input.Events <- &Line{
 				Data: map[string]interface{}{
 					"message": line,
 				},
@@ -31,10 +30,9 @@ func (f *FromStdin) New() {
 }
 
 type FromChan struct {
-	Node
 	From
 }
 
 func (f *FromChan) New() {
-	f.Events = make(chan *Line)
+	f.Input.Events = make(chan *Line)
 }

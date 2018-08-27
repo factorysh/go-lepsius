@@ -7,6 +7,7 @@ type Node struct {
 type Input struct {
 	Test    bool
 	Debug   bool
+	Events  chan *Line
 	Filters []FilterNode
 }
 
@@ -27,7 +28,7 @@ func (i *Input) FromStdin() *FromStdin {
 
 func (i *Input) FromChan(c chan *Line) *FromChan {
 	fc := &FromChan{}
-	fc.Events = c
+	i.Events = c
 	fc.Input = i
 	return fc
 }
