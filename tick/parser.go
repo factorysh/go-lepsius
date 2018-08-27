@@ -1,19 +1,47 @@
 package tick
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+)
 
-type Line map[string]interface{}
-type Parser func([]byte) (Line, error)
+type Line struct {
+	Data map[string]interface{}
+}
 
-func JsonParser(raw []byte) (Line, error) {
-	var o Line
-	err := json.Unmarshal(raw, o)
+func NewLine(datas ...interface{}) (*Line, error) {
+	if len(datas)%2 != 0 {
+		return nil, errors.New("Need an even number of arguments")
+	}
+	l := &Line{
+		Data: make(map[string]interface{}),
+	}
+
+	for i := 0; i < len(datas)/2; i++ {
+		k, ok := datas[i].(string)
+		if !ok {
+			return nil, fmt.Errorf("This key is not a string : %v", datas[i])
+		}
+		l.Data[k] = datas[i+1]
+	}
+	return l, nil
+}
+
+type Parser func([]byte) (*Line, error)
+
+func JsonParser(raw []byte) (*Line, error) {
+	o := &Line{}
+	err := json.Unmarshal(raw, o.Data)
 	if err != nil {
 		return nil, err
 	}
 	return o, nil
 }
 
-func NoParser(raw []byte) (Line, error) {
-	return Line{"message": raw}, nil
+func NoParser(raw []byte) (*Line, error) {
+	return &Line{
+		Data: map[string]interface{}{
+			"message": raw},
+	}, nil
 }

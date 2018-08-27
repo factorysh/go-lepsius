@@ -52,6 +52,8 @@ var i2 = input
 	assert.True(t, ok)
 	assert.Len(t, i2.Input.Filters, 2)
 
-	c <- &Line{"beuha": "aussi"}
+	l, err := NewLine("beuha", "aussi")
+	assert.NoError(t, err)
+	c <- l
 	fmt.Println(i2)
 }

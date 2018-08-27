@@ -22,7 +22,9 @@ func (f *FromStdin) New() {
 		for scanner.Scan() {
 			line := scanner.Bytes()
 			f.Events <- &Line{
-				"message": line,
+				Data: map[string]interface{}{
+					"message": line,
+				},
 			}
 		}
 	}()

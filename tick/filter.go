@@ -1,8 +1,21 @@
 package tick
 
 import (
+	"crypto/sha1"
+	"fmt"
+	"hash"
+	"io"
+
 	"github.com/vjeantet/grok"
 )
+
+var hashes map[string]func() hash.Hash
+
+func init() {
+	hashes = map[string]func() hash.Hash{
+		"sha1": sha1.New,
+	}
+}
 
 type FilterNode interface {
 	DoFilter(*Line) (*Line, error)
@@ -35,6 +48,15 @@ type FingerprintFilter struct {
 
 func (fp *FingerprintFilter) DoFilter(in *Line) (*Line, error) {
 	//TODO
+	h, ok := hashes[fp.Method]
+	if !ok {
+		return nil, fmt.Errorf("Hash method not found : %s", fp.Method)
+	}
+	hh := h()
+	for _, s := range fp.SourceList {
+		io.WriteString(hh, fmt.Sprintf("%v", in.Data[s]))
+	}
+	in.Data[fp.Target] = hh.Sum(nil)
 	return in, nil
 }
 
@@ -45,6 +67,6 @@ func (fp *FingerprintFilter) Source(sources ...string) *FingerprintFilter {
 
 func NewFingerprintFilter() *FingerprintFilter {
 	return &FingerprintFilter{
-		Method: "sha256",
+		Method: "sha1",
 	}
 }
