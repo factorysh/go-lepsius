@@ -18,7 +18,7 @@ func init() {
 }
 
 type FilterNode interface {
-	DoFilter(*Line) (*Line, error)
+	DoFilter(*Line) error
 }
 
 type GrokFilter struct {
@@ -28,9 +28,9 @@ type GrokFilter struct {
 	grok   *grok.Grok
 }
 
-func (gf *GrokFilter) DoFilter(in *Line) (*Line, error) {
+func (gf *GrokFilter) DoFilter(in *Line) error {
 	//TODO
-	return in, nil
+	return nil
 }
 
 func NewGrokFilter() *GrokFilter {
@@ -46,18 +46,18 @@ type FingerprintFilter struct {
 	Target     string
 }
 
-func (fp *FingerprintFilter) DoFilter(in *Line) (*Line, error) {
+func (fp *FingerprintFilter) DoFilter(in *Line) error {
 	//TODO
 	h, ok := hashes[fp.Method]
 	if !ok {
-		return nil, fmt.Errorf("Hash method not found : %s", fp.Method)
+		return fmt.Errorf("Hash method not found : %s", fp.Method)
 	}
 	hh := h()
 	for _, s := range fp.SourceList {
 		io.WriteString(hh, fmt.Sprintf("%v", in.Data[s]))
 	}
 	in.Data[fp.Target] = hh.Sum(nil)
-	return in, nil
+	return nil
 }
 
 func (fp *FingerprintFilter) Source(sources ...string) *FingerprintFilter {
