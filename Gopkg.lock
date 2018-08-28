@@ -103,19 +103,6 @@
   revision = "0fb14efe8c47ae851c0034ed7a448854d3d34cf3"
 
 [[projects]]
-  branch = "master"
-  digest = "1:a0fcb763bbae723b790db78143ac713c2a96c7542a4e1a2628ba3a9aedd13ae9"
-  name = "github.com/hashicorp/hil"
-  packages = [
-    ".",
-    "ast",
-    "parser",
-    "scanner",
-  ]
-  pruneopts = "UT"
-  revision = "fa9f258a92500514cc8e9c67020487709df92432"
-
-[[projects]]
   digest = "1:a1038ef593beb4771c8f0f9c26e8b00410acd800af5c6864651d9bf160ea1813"
   name = "github.com/hpcloud/tail"
   packages = [
@@ -162,14 +149,6 @@
   packages = ["."]
   pruneopts = "UT"
   revision = "00c29f56e2386353d58c599509e8dc3801b0d716"
-
-[[projects]]
-  branch = "master"
-  digest = "1:012bcbda750df8b57e302656a0820833eaa98009a7546b22620283c65996743b"
-  name = "github.com/mitchellh/reflectwalk"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "63d60e9d0dbc60cf9164e6510889b0db6683d98c"
 
 [[projects]]
   digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
@@ -272,12 +251,9 @@
     "github.com/coreos/go-systemd/sdjournal",
     "github.com/davecgh/go-spew/spew",
     "github.com/getsentry/raven-go",
-    "github.com/hashicorp/hil",
-    "github.com/hashicorp/hil/ast",
-    "github.com/hashicorp/hil/parser",
-    "github.com/hashicorp/hil/scanner",
     "github.com/hpcloud/tail",
     "github.com/influxdata/kapacitor/tick",
+    "github.com/influxdata/kapacitor/tick/stateful",
     "github.com/mitchellh/mapstructure",
     "github.com/stretchr/testify/assert",
     "github.com/vjeantet/grok",
