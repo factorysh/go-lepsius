@@ -7,6 +7,7 @@ import (
 	"github.com/influxdata/kapacitor/tick"
 	"github.com/influxdata/kapacitor/tick/stateful"
 	"github.com/stretchr/testify/assert"
+	"gitlab.bearstech.com/bearstech/go-lepsius/tick/model"
 )
 
 func TestTick(t *testing.T) {
@@ -31,7 +32,7 @@ var i2 = input
 	scope := stateful.NewScope()
 	input := NewInput()
 	input.Test = true
-	c := make(chan *Line, 1)
+	c := make(chan *model.Line, 1)
 	scope.Set("input", input)
 	scope.Set("json", JsonParser)
 	scope.Set("chan", c)
@@ -52,7 +53,7 @@ var i2 = input
 	assert.True(t, ok)
 	assert.Len(t, i2.Input.Filters, 2)
 
-	l, err := NewLine("beuha", "aussi")
+	l, err := model.NewLine("beuha", "aussi")
 	assert.NoError(t, err)
 	c <- l
 	fmt.Println(i2)

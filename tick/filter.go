@@ -1,25 +1,13 @@
 package tick
 
 import (
-	"crypto/sha1"
-	"encoding/base64"
-	"fmt"
-	"hash"
-	"io"
-
 	"github.com/vjeantet/grok"
+	"gitlab.bearstech.com/bearstech/go-lepsius/tick/filter"
+	"gitlab.bearstech.com/bearstech/go-lepsius/tick/model"
 )
 
-var hashes map[string]func() hash.Hash
-
-func init() {
-	hashes = map[string]func() hash.Hash{
-		"sha1": sha1.New,
-	}
-}
-
 type FilterNode interface {
-	DoFilter(*Line) error
+	DoFilter(*model.Line) error
 }
 
 type GrokFilter struct {
@@ -29,15 +17,15 @@ type GrokFilter struct {
 	grok   *grok.Grok
 }
 
-func (gf *GrokFilter) DoFilter(in *Line) error {
-	//TODO
-	return nil
-}
-
 func NewGrokFilter() *GrokFilter {
 	return &GrokFilter{
 		Source: "message",
 	}
+}
+
+func (g *GrokFilter) DoFilter(in *model.Line) error {
+	//TODO
+	return nil
 }
 
 type FingerprintFilter struct {
@@ -48,25 +36,11 @@ type FingerprintFilter struct {
 	Target     string
 }
 
-func (fp *FingerprintFilter) DoFilter(in *Line) error {
-	//TODO
-	h, ok := hashes[fp.Method]
-	if !ok {
-		return fmt.Errorf("Hash method not found : %s", fp.Method)
+func NewFingerprintFilter() *FingerprintFilter {
+	return &FingerprintFilter{
+		Method: "sha1",
+		Format: "base64",
 	}
-	hh := h()
-	for _, s := range fp.SourceList {
-		io.WriteString(hh, fmt.Sprintf("%v", in.Data[s]))
-	}
-	var v interface{}
-	switch fp.Format {
-	case "base64":
-		v = base64.StdEncoding.EncodeToString(hh.Sum(nil))
-	default:
-		v = hh.Sum(nil)
-	}
-	in.Data[fp.Target] = v
-	return nil
 }
 
 func (fp *FingerprintFilter) Source(sources ...string) *FingerprintFilter {
@@ -74,9 +48,6 @@ func (fp *FingerprintFilter) Source(sources ...string) *FingerprintFilter {
 	return fp
 }
 
-func NewFingerprintFilter() *FingerprintFilter {
-	return &FingerprintFilter{
-		Method: "sha1",
-		Format: "base64",
-	}
+func (fp *FingerprintFilter) DoFilter(in *model.Line) error {
+	return filter.DoFingerprintFilter(fp.Method, fp.Format, fp.SourceList, fp.Target, in)
 }

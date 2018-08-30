@@ -1,5 +1,9 @@
 package tick
 
+import (
+	"gitlab.bearstech.com/bearstech/go-lepsius/tick/model"
+)
+
 type Node struct {
 	Input *Input
 }
@@ -7,7 +11,7 @@ type Node struct {
 type Input struct {
 	Test    bool
 	Debug   bool
-	Events  chan *Line
+	Events  chan *model.Line
 	Filters []FilterNode
 }
 
@@ -26,14 +30,14 @@ func (i *Input) FromStdin() *FromStdin {
 	return f
 }
 
-func (i *Input) FromChan(c chan *Line) *FromChan {
+func (i *Input) FromChan(c chan *model.Line) *FromChan {
 	fc := &FromChan{}
 	i.Events = c
 	fc.Input = i
 	return fc
 }
 
-func (i *Input) read() (*Line, error) {
+func (i *Input) read() (*model.Line, error) {
 	line := <-i.Events
 	for _, f := range i.Filters {
 		err := f.DoFilter(line)

@@ -3,6 +3,8 @@ package tick
 import (
 	"bufio"
 	"os"
+
+	"gitlab.bearstech.com/bearstech/go-lepsius/tick/model"
 )
 
 type From struct {
@@ -15,12 +17,12 @@ type FromStdin struct {
 }
 
 func (f *FromStdin) New() {
-	f.Input.Events = make(chan *Line)
+	f.Input.Events = make(chan *model.Line)
 	scanner := bufio.NewScanner(os.Stdin)
 	go func() {
 		for scanner.Scan() {
 			line := scanner.Bytes()
-			f.Input.Events <- &Line{
+			f.Input.Events <- &model.Line{
 				Data: map[string]interface{}{
 					"message": line,
 				},
@@ -34,5 +36,5 @@ type FromChan struct {
 }
 
 func (f *FromChan) New() {
-	f.Input.Events = make(chan *Line)
+	f.Input.Events = make(chan *model.Line)
 }
