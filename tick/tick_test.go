@@ -31,7 +31,7 @@ var i2 = input
 `
 	scope := stateful.NewScope()
 	input := NewInput()
-	input.Test = true
+	input.pipeline.Test = true
 	c := make(chan *model.Line, 1)
 	scope.Set("input", input)
 	scope.Set("json", JsonParser)
@@ -42,22 +42,23 @@ var i2 = input
 	fmt.Println(r)
 	i, err := scope.Get("i")
 	assert.NoError(t, err)
+	assert.NotNil(t, i)
 	s, ok := i.(*Stdout)
 	assert.True(t, ok)
 	fmt.Println(s)
-	fmt.Println(s.Input.Test)
+	fmt.Println(s.Pipeline().Test)
 
 	i2_, err := scope.Get("i2")
 	assert.NoError(t, err)
 	i2, ok := i2_.(*Stdout)
 	assert.True(t, ok)
-	assert.Len(t, i2.Input.Filters, 2)
+	assert.Len(t, i2.Pipeline().Filters, 2)
 
 	l, err := model.NewLine("beuha", "aussi")
 	assert.NoError(t, err)
 	c <- l
 	fmt.Println(i2)
-	l2, err := i2.Input.read()
+	l2, err := i2.Pipeline().read()
 	assert.NoError(t, err)
 	fmt.Println(l2)
 }

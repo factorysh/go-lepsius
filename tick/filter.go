@@ -7,11 +7,12 @@ import (
 )
 
 type FilterNode interface {
+	Node
 	DoFilter(*model.Line) error
 }
 
 type GrokFilter struct {
-	Node
+	node
 	Source string
 	Match  string
 	grok   *grok.Grok
@@ -29,7 +30,7 @@ func (g *GrokFilter) DoFilter(in *model.Line) error {
 }
 
 type FingerprintFilter struct {
-	Node
+	node
 	Method     string
 	SourceList []string `tick:"Source" json:"source"`
 	Format     string
