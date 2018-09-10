@@ -33,9 +33,11 @@ var i2 = input
 	input := NewInput()
 	input.pipeline.Test = true
 	c := make(chan *model.Line, 1)
+	c2 := make(chan *model.Line, 1)
 	scope.Set("input", input)
 	scope.Set("json", JsonParser)
 	scope.Set("chan", c)
+	scope.Set("chan2", c2)
 
 	r, err := tick.Evaluate(script, scope, nil, false)
 	assert.NoError(t, err)
@@ -61,4 +63,37 @@ var i2 = input
 	l2, err := i2.Pipeline().read()
 	assert.NoError(t, err)
 	fmt.Println(l2)
+
+}
+
+func TestLambda(t *testing.T) {
+	script := `
+
+var i = input
+	|fromChan(chan)
+	|where(lambda: "name" == 'robert')
+	|stdout()
+
+`
+	scope := stateful.NewScope()
+	input := NewInput()
+	scope.Set("input", input)
+	c := make(chan *model.Line, 1)
+	scope.Set("chan", c)
+	r, err := tick.Evaluate(script, scope, nil, false)
+	assert.NoError(t, err)
+	fmt.Println(r)
+	i, err := scope.Get("i")
+	assert.NoError(t, err)
+	assert.NotNil(t, i)
+	i2, ok := i.(*Stdout)
+	assert.True(t, ok)
+
+	l, err := model.NewLine("name", "robert")
+	assert.NoError(t, err)
+	c <- l
+	l2, err := i2.Pipeline().read()
+	assert.NoError(t, err)
+	fmt.Println("line", l2)
+
 }

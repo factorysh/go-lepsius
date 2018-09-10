@@ -1,6 +1,10 @@
 package tick
 
 import (
+	"fmt"
+
+	"github.com/influxdata/kapacitor/tick/ast"
+	"github.com/influxdata/kapacitor/tick/stateful"
 	"gitlab.bearstech.com/bearstech/go-lepsius/tick/model"
 )
 
@@ -106,4 +110,39 @@ type Stdout struct {
 
 func (s *Stdout) Pipeline() *Pipeline {
 	return s.pipeline
+}
+
+type Where struct {
+	node
+	lambda *stateful.EvalLambdaNode
+}
+
+func (w *Where) DoFilter(line *model.Line) error {
+	scope := stateful.NewScope()
+	for k, v := range line.Data {
+		scope.Set(k, v)
+	}
+	stack := stateful.ExecutionState{}
+	ok, err := w.lambda.EvalBool(scope, stack)
+	if err != nil {
+		return err
+	}
+	fmt.Println("Where", ok)
+	if !ok {
+		// Do not use the line
+	}
+	return nil
+}
+
+func (n *node) Where(lambda *ast.LambdaNode) (*Where, error) {
+	evaluator, err := stateful.NewEvalLambdaNode(lambda)
+	if err != nil {
+		return nil, err
+	}
+
+	w := &Where{
+		lambda: evaluator,
+	}
+	n.linkFilter(w)
+	return w, nil
 }

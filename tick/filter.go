@@ -1,6 +1,7 @@
 package tick
 
 import (
+	"github.com/influxdata/kapacitor/tick/ast"
 	"github.com/vjeantet/grok"
 	"gitlab.bearstech.com/bearstech/go-lepsius/tick/filter"
 	"gitlab.bearstech.com/bearstech/go-lepsius/tick/model"
@@ -49,6 +50,12 @@ func (fp *FingerprintFilter) Source(sources ...string) *FingerprintFilter {
 	return fp
 }
 
+// tick:ignore
 func (fp *FingerprintFilter) DoFilter(in *model.Line) error {
 	return filter.DoFingerprintFilter(fp.Method, fp.Format, fp.SourceList, fp.Target, in)
+}
+
+type WhereFilter struct {
+	node
+	lambda *ast.LambdaNode
 }
