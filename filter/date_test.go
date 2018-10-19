@@ -1,10 +1,11 @@
 package filter
 
 import (
-	"github.com/bearstech/go-lepsius/model"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/factorysh/go-lepsius/model"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestHaproxy_date_format(t *testing.T) {

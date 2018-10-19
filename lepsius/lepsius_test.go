@@ -1,9 +1,10 @@
 package lepsius
 
 import (
-	"github.com/bearstech/go-lepsius/conf"
-	"gopkg.in/yaml.v2"
 	"testing"
+
+	"github.com/factorysh/go-lepsius/conf"
+	"gopkg.in/yaml.v2"
 )
 
 func TestFromBook(t *testing.T) {

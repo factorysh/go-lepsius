@@ -1,7 +1,7 @@
 package filter
 
 import (
-	"github.com/bearstech/go-lepsius/model"
+	"github.com/factorysh/go-lepsius/model"
 )
 
 var Filter map[string]model.Filter

@@ -2,8 +2,9 @@ package filter
 
 import (
 	"fmt"
+
 	"github.com/athoune/yangtze/index"
-	"github.com/bearstech/go-lepsius/model"
+	"github.com/factorysh/go-lepsius/model"
 	"github.com/mitchellh/mapstructure"
 )
 

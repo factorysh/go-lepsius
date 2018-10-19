@@ -15,22 +15,6 @@
   revision = "77a3d3b77b4a1a93a86b1ff60f194197d8e870d5"
 
 [[projects]]
-  branch = "master"
-  digest = "1:85374c50eb58420a5d613be2db093d9583bf305dfe4d2ed874df74045e41de3c"
-  name = "github.com/bearstech/go-lepsius"
-  packages = [
-    "conf",
-    "filter",
-    "input",
-    "lepsius",
-    "model",
-    "output",
-    "parser",
-  ]
-  pruneopts = "UT"
-  revision = "7a5a3e53e31315825f1099b22298a8f55013a2a7"
-
-[[projects]]
   digest = "1:fed1f537c2f1269fe475a8556c393fe466641682d73ef8fd0491cd3aa1e47bad"
   name = "github.com/certifi/gocertifi"
   packages = ["."]
@@ -260,13 +244,6 @@
   analyzer-version = 1
   input-imports = [
     "github.com/athoune/yangtze/index",
-    "github.com/bearstech/go-lepsius/conf",
-    "github.com/bearstech/go-lepsius/filter",
-    "github.com/bearstech/go-lepsius/input",
-    "github.com/bearstech/go-lepsius/lepsius",
-    "github.com/bearstech/go-lepsius/model",
-    "github.com/bearstech/go-lepsius/output",
-    "github.com/bearstech/go-lepsius/parser",
     "github.com/coreos/go-systemd/sdjournal",
     "github.com/davecgh/go-spew/spew",
     "github.com/getsentry/raven-go",

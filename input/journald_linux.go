@@ -2,11 +2,12 @@ package input
 
 import (
 	"fmt"
-	"github.com/bearstech/go-lepsius/model"
-	"github.com/coreos/go-systemd/sdjournal"
-	"github.com/mitchellh/mapstructure"
 	"strings"
 	"time"
+
+	"github.com/coreos/go-systemd/sdjournal"
+	"github.com/factorysh/go-lepsius/model"
+	"github.com/mitchellh/mapstructure"
 )
 
 func init() {

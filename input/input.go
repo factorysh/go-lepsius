@@ -1,7 +1,7 @@
 package input
 
 import (
-	"github.com/bearstech/go-lepsius/model"
+	"github.com/factorysh/go-lepsius/model"
 )
 
 var Input map[string]model.Input

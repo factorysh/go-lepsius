@@ -1,12 +1,13 @@
 package input
 
 import (
-	"github.com/bearstech/go-lepsius/model"
+	"github.com/factorysh/go-lepsius/model"
 	//"gopkg.in/mcuadros/go-syslog.v2/format"
 	"fmt"
-	"github.com/mitchellh/mapstructure"
 	"gopkg.in/mcuadros/go-syslog.v2"
 	"net/url"
+
+	"github.com/mitchellh/mapstructure"
 )
 
 func init() {

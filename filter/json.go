@@ -3,7 +3,8 @@ package filter
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/bearstech/go-lepsius/model"
+
+	"github.com/factorysh/go-lepsius/model"
 	"github.com/mitchellh/mapstructure"
 )
 

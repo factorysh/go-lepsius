@@ -2,9 +2,10 @@ package filter
 
 import (
 	"fmt"
-	"github.com/bearstech/go-lepsius/model"
-	"github.com/mitchellh/mapstructure"
 	"time"
+
+	"github.com/factorysh/go-lepsius/model"
+	"github.com/mitchellh/mapstructure"
 )
 
 func init() {

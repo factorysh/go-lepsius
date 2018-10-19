@@ -7,7 +7,7 @@ import (
 	"hash"
 	"io"
 
-	"gitlab.bearstech.com/bearstech/go-lepsius/tick/model"
+	"github.com/factorysh/go-lepsius/tick/model"
 )
 
 var hashes map[string]func() hash.Hash

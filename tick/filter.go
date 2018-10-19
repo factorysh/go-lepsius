@@ -1,10 +1,10 @@
 package tick
 
 import (
+	"github.com/factorysh/go-lepsius/tick/filter"
+	"github.com/factorysh/go-lepsius/tick/model"
 	"github.com/influxdata/kapacitor/tick/ast"
 	"github.com/vjeantet/grok"
-	"gitlab.bearstech.com/bearstech/go-lepsius/tick/filter"
-	"gitlab.bearstech.com/bearstech/go-lepsius/tick/model"
 )
 
 type FilterNode interface {

@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/bearstech/go-lepsius/conf"
+	"github.com/factorysh/go-lepsius/conf"
 )
 
 type Line struct {

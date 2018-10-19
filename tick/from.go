@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"os"
 
-	"gitlab.bearstech.com/bearstech/go-lepsius/tick/model"
+	"github.com/factorysh/go-lepsius/tick/model"
 )
 
 type From struct {

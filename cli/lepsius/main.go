@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/bearstech/go-lepsius/conf"
-	"github.com/bearstech/go-lepsius/lepsius"
 	"os"
+
+	"github.com/factorysh/go-lepsius/conf"
+	"github.com/factorysh/go-lepsius/lepsius"
 )
 
 func main() {

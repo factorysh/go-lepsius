@@ -1,7 +1,7 @@
 package parser
 
 import (
-	"github.com/bearstech/go-lepsius/model"
+	"github.com/factorysh/go-lepsius/model"
 )
 
 var Parser map[string]model.Parser

@@ -2,10 +2,11 @@ package input
 
 import (
 	"bufio"
-	"github.com/bearstech/go-lepsius/model"
-	"github.com/bearstech/go-lepsius/parser"
-	"github.com/mitchellh/mapstructure"
 	"os"
+
+	"github.com/factorysh/go-lepsius/model"
+	"github.com/factorysh/go-lepsius/parser"
+	"github.com/mitchellh/mapstructure"
 )
 
 func init() {

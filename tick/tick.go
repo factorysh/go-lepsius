@@ -3,9 +3,10 @@ package tick
 import (
 	"fmt"
 
+	"github.com/factorysh/go-lepsius/tick/model"
 	"github.com/influxdata/kapacitor/tick/ast"
 	"github.com/influxdata/kapacitor/tick/stateful"
-	"gitlab.bearstech.com/bearstech/go-lepsius/tick/model"
+	log "github.com/sirupsen/logrus"
 )
 
 type Node interface {
@@ -82,6 +83,10 @@ func (p *Pipeline) read() (*model.Line, error) {
 		if err != nil {
 			return nil, err
 		}
+		if !line.KeepIt {
+			log.Debug("Premature skip")
+			return line, nil
+		}
 	}
 	return line, nil
 }
@@ -128,6 +133,7 @@ func (w *Where) DoFilter(line *model.Line) error {
 		return err
 	}
 	fmt.Println("Where", ok)
+	line.KeepIt = ok
 	if !ok {
 		// Do not use the line
 	}

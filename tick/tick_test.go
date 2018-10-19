@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/factorysh/go-lepsius/tick/model"
 	"github.com/influxdata/kapacitor/tick"
 	"github.com/influxdata/kapacitor/tick/stateful"
 	"github.com/stretchr/testify/assert"
-	"gitlab.bearstech.com/bearstech/go-lepsius/tick/model"
 )
 
 func TestTick(t *testing.T) {

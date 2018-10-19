@@ -4,8 +4,9 @@ package output
 
 import (
 	"fmt"
-	_conf "github.com/bearstech/go-lepsius/conf"
 	"time"
+
+	_conf "github.com/factorysh/go-lepsius/conf"
 )
 
 func init() {

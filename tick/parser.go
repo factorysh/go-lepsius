@@ -3,7 +3,7 @@ package tick
 import (
 	"encoding/json"
 
-	"gitlab.bearstech.com/bearstech/go-lepsius/tick/model"
+	"github.com/factorysh/go-lepsius/tick/model"
 )
 
 type Parser func([]byte) (*model.Line, error)

@@ -1,8 +1,8 @@
 package input
 
 import (
-	"github.com/bearstech/go-lepsius/model"
-	"github.com/bearstech/go-lepsius/parser"
+	"github.com/factorysh/go-lepsius/model"
+	"github.com/factorysh/go-lepsius/parser"
 	_tail "github.com/hpcloud/tail"
 	"github.com/mitchellh/mapstructure"
 )

@@ -3,11 +3,12 @@ package lepsius
 import (
 	"errors"
 	"fmt"
-	"github.com/bearstech/go-lepsius/conf"
-	_filter "github.com/bearstech/go-lepsius/filter"
-	_input "github.com/bearstech/go-lepsius/input"
-	"github.com/bearstech/go-lepsius/model"
-	_output "github.com/bearstech/go-lepsius/output"
+
+	"github.com/factorysh/go-lepsius/conf"
+	_filter "github.com/factorysh/go-lepsius/filter"
+	_input "github.com/factorysh/go-lepsius/input"
+	"github.com/factorysh/go-lepsius/model"
+	_output "github.com/factorysh/go-lepsius/output"
 )
 
 type Lepsius struct {

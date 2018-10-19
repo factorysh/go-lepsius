@@ -1,9 +1,10 @@
 package filter
 
 import (
-	"github.com/bearstech/go-lepsius/model"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/factorysh/go-lepsius/model"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestJson(t *testing.T) {
