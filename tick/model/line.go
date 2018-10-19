@@ -3,10 +3,14 @@ package model
 import (
 	"errors"
 	"fmt"
+	"time"
 )
 
 type Line struct {
-	Data map[string]interface{}
+	Data      map[string]interface{}
+	KeepIt    bool
+	Tags      map[string]string
+	Timestamp time.Time
 }
 
 func NewLine(datas ...interface{}) (*Line, error) {
@@ -14,7 +18,8 @@ func NewLine(datas ...interface{}) (*Line, error) {
 		return nil, errors.New("Need an even number of arguments")
 	}
 	l := &Line{
-		Data: make(map[string]interface{}),
+		Data:   make(map[string]interface{}),
+		KeepIt: true,
 	}
 
 	for i := 0; i < len(datas)/2; i++ {
@@ -25,4 +30,10 @@ func NewLine(datas ...interface{}) (*Line, error) {
 		l.Data[k] = datas[i+1]
 	}
 	return l, nil
+}
+
+func (l *Line) Flatten() map[string]interface{} {
+	d := l.Data
+	d["tags"] = l.Tags
+	return d
 }
