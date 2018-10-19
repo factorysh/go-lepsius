@@ -22,7 +22,7 @@ func NewLine(datas ...interface{}) (*Line, error) {
 		KeepIt: true,
 	}
 
-	for i := 0; i < len(datas)/2; i++ {
+	for i := 0; i < len(datas); i += 2 {
 		k, ok := datas[i].(string)
 		if !ok {
 			return nil, fmt.Errorf("This key is not a string : %v", datas[i])
