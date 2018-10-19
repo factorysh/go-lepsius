@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// Line of log
 type Line struct {
 	Data      map[string]interface{}
 	KeepIt    bool
@@ -13,6 +14,7 @@ type Line struct {
 	Timestamp time.Time
 }
 
+// NewLine from list of key, value, key, value…
 func NewLine(datas ...interface{}) (*Line, error) {
 	if len(datas)%2 != 0 {
 		return nil, errors.New("Need an even number of arguments")
@@ -32,6 +34,7 @@ func NewLine(datas ...interface{}) (*Line, error) {
 	return l, nil
 }
 
+// Flatten Line as a map
 func (l *Line) Flatten() map[string]interface{} {
 	d := l.Data
 	d["tags"] = l.Tags
