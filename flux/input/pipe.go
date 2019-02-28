@@ -126,12 +126,13 @@ func (p *PipeSource) Decode() (flux.Table, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(line)
 	key := execute.NewGroupKey([]flux.ColMeta{}, []values.Value{})
 	tb := execute.NewColListTableBuilder(key, p.alloc)
 	tb.AppendString(0, line)
 	return tb.Table()
 }
+
 func (p *PipeSource) Close() error {
-	return nil
+	p.fifoCtx.Done()
+	return p.fifo.Close()
 }
