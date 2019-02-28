@@ -159,6 +159,14 @@
   version = "2018.01.18"
 
 [[projects]]
+  branch = "master"
+  digest = "1:9ab2182297ebe5a1433c9804ba65a382e4f41e3084485d1b4d31996e4c992e38"
+  name = "github.com/containerd/fifo"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "a9fb20d87448d386e6d50b1f2e1fa70dcf0de43c"
+
+[[projects]]
   digest = "1:3223537097b17ffbb6ed6f4ac308c0486800fb9c16ceb328e337fe7aaf1cf20d"
   name = "github.com/coreos/go-systemd"
   packages = ["sdjournal"]
@@ -802,6 +810,7 @@
   analyzer-version = 1
   input-imports = [
     "github.com/athoune/yangtze/index",
+    "github.com/containerd/fifo",
     "github.com/coreos/go-systemd/sdjournal",
     "github.com/davecgh/go-spew/spew",
     "github.com/getsentry/raven-go",
@@ -809,7 +818,9 @@
     "github.com/influxdata/flux",
     "github.com/influxdata/flux/ast",
     "github.com/influxdata/flux/control",
+    "github.com/influxdata/flux/execute",
     "github.com/influxdata/flux/interpreter",
+    "github.com/influxdata/flux/memory",
     "github.com/influxdata/flux/parser",
     "github.com/influxdata/flux/plan",
     "github.com/influxdata/flux/semantic",

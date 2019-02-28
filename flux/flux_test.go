@@ -20,6 +20,7 @@ func TestFlux(t *testing.T) {
 	a = 1+1
 	b = a *2
 	//a |> yield()
+	p = input.pipe(path:"/tmp/lepsius")
 	`
 	pkg := parser.ParseSource(ql)
 	if ast.Check(pkg) > 0 {
