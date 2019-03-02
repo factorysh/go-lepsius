@@ -38,11 +38,11 @@ func init() {
 
 func createPipeOpSpec(args flux.Arguments, a *flux.Administration) (flux.OperationSpec, error) {
 	spec := new(PipeOpSpec)
-	if p, _, e := args.GetString("path"); e != nil {
+	p, _, e := args.GetString("path")
+	if e != nil {
 		return nil, e
-	} else {
-		spec.Path = p
 	}
+	spec.Path = p
 	return spec, nil
 }
 

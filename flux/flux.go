@@ -7,6 +7,7 @@ import (
 
 	"github.com/influxdata/flux"
 	"github.com/influxdata/flux/control"
+	_ "github.com/influxdata/flux/stdlib/universe" // uinverse flux
 )
 
 type Querier struct {

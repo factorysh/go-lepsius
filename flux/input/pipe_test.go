@@ -1,26 +1,31 @@
-package flux
+package input
 
 import (
+	"context"
 	"fmt"
+	"syscall"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
+	"github.com/containerd/fifo"
 	"github.com/influxdata/flux"
 	"github.com/influxdata/flux/ast"
 	"github.com/influxdata/flux/interpreter"
 	"github.com/influxdata/flux/parser"
 	"github.com/influxdata/flux/semantic"
+	_ "github.com/influxdata/flux/stdlib/universe" // uinverse flux
 	"github.com/influxdata/flux/values"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestFlux(t *testing.T) {
+func TestPipe(t *testing.T) {
+	ctx := context.Background()
+	f, err := fifo.OpenFifo(ctx, "/tmp/lepsius", syscall.O_CREAT+syscall.O_RDWR,
+		0660)
+	assert.NoError(t, err)
 	ql := `
 	import "input"
-	a = 1+1
-	b = a *2
-	//a |> yield()
 	p = input.pipe(path:"/tmp/lepsius")
+	//return p |> yield()
 	`
 	pkg := parser.ParseSource(ql)
 	if ast.Check(pkg) > 0 {
@@ -43,4 +48,5 @@ func TestFlux(t *testing.T) {
 	testScope.Range(func(k string, v values.Value) {
 		fmt.Println(k, v)
 	})
+	f.Write([]byte("Hello world"))
 }
