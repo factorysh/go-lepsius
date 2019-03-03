@@ -36,3 +36,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/containerd/fifo"
+
+[[override]]
+  branch = "master"
+  name = "github.com/apache/arrow"

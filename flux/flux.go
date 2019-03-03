@@ -6,9 +6,20 @@ import (
 	"math"
 
 	"github.com/influxdata/flux"
+	"github.com/influxdata/flux/ast"
 	"github.com/influxdata/flux/control"
+	"github.com/influxdata/flux/parser"
+	"github.com/influxdata/flux/semantic"
 	_ "github.com/influxdata/flux/stdlib/universe" // uinverse flux
 )
+
+func BuildPackage(source string) (*semantic.Package, error) {
+	pkg := parser.ParseSource(source)
+	if ast.Check(pkg) > 0 {
+		return nil, ast.GetError(pkg)
+	}
+	return semantic.New(pkg)
+}
 
 type Querier struct {
 	C *control.Controller

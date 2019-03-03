@@ -152,6 +152,14 @@
   revision = "88950e537e7e644cd746a3102037b5d2b723e9f5"
 
 [[projects]]
+  digest = "1:998cf998358a303ac2430c386ba3fd3398477d6013153d3c6e11432765cc9ae6"
+  name = "github.com/cespare/xxhash"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "3b82fb7d186719faeedd0c2864f868c74fbf79a1"
+  version = "v2.0.0"
+
+[[projects]]
   branch = "master"
   digest = "1:9ab2182297ebe5a1433c9804ba65a382e4f41e3084485d1b4d31996e4c992e38"
   name = "github.com/containerd/fifo"
@@ -174,6 +182,14 @@
   pruneopts = "UT"
   revision = "5b77d2a35fb0ede96d138fc9a99f5c9b6aef11b4"
   version = "v1.7.0"
+
+[[projects]]
+  digest = "1:ec6f9bf5e274c833c911923c9193867f3f18788c461f76f05f62bb1510e0ae65"
+  name = "github.com/go-sql-driver/mysql"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "72cd26f257d44c1114970e19afddcd812016007e"
+  version = "v1.4.1"
 
 [[projects]]
   digest = "1:318f1c959a8a740366fce4b1e1eb2fd914036b4af58fbd0a003349b305f118ad"
@@ -305,30 +321,56 @@
   version = "v0.3.7"
 
 [[projects]]
-  digest = "1:886e6b37275b0629f0c887c66f69d74b8aaef3b9abf39adfd1073444fc520494"
+  digest = "1:e6999371bc5ac9d1bc97f16f27a8cf49a97e091701b8c08653faa3e1874cc209"
   name = "github.com/influxdata/flux"
   packages = [
     ".",
     "arrow",
     "ast",
+    "builtin",
     "compiler",
     "control",
+    "csv",
     "execute",
+    "influxql",
     "internal/parser",
+    "internal/pkg/syncutil",
     "internal/scanner",
     "internal/token",
     "interpreter",
     "iocounter",
+    "line",
     "memory",
     "parser",
     "plan",
     "semantic",
+    "stdlib",
+    "stdlib/csv",
+    "stdlib/generate",
+    "stdlib/http",
+    "stdlib/influxdata/influxdb",
+    "stdlib/influxdata/influxdb/v1",
+    "stdlib/kafka",
+    "stdlib/socket",
+    "stdlib/sql",
+    "stdlib/strings",
+    "stdlib/system",
+    "stdlib/testing",
+    "stdlib/testing/testdata",
     "stdlib/universe",
     "values",
   ]
   pruneopts = "UT"
   revision = "af24bbe75bf498c719a56e41f5b0a1eda24438ef"
   version = "v0.21.2"
+
+[[projects]]
+  branch = "master"
+  digest = "1:c09ec8fcd82da2e8bb4824d28e7a5ee0be5990473db2382a5c71badd404074ba"
+  name = "github.com/influxdata/line-protocol"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "a3afd890113fb9f0337e05808bb06fb0ca4c685a"
 
 [[projects]]
   branch = "master"
@@ -356,6 +398,17 @@
   pruneopts = "UT"
   revision = "23b473cc5a72c0be46cff16c1d1697bf98d0e373"
   version = "v4.0.0"
+
+[[projects]]
+  digest = "1:8ef506fc2bb9ced9b151dafa592d4046063d744c646c1bbe801982ce87e4bc24"
+  name = "github.com/lib/pq"
+  packages = [
+    ".",
+    "oid",
+  ]
+  pruneopts = "UT"
+  revision = "4ded0e9383f75c197b3a2aaa6d590ac52df6fd79"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
@@ -497,6 +550,14 @@
   version = "v1.2.0"
 
 [[projects]]
+  digest = "1:c6502cd848a89b1d62ed82ba5f20546444d3028879f4af40368e489fa962ba9f"
+  name = "github.com/segmentio/kafka-go"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "0b3aacc527812d4040e51211146a43545e82d670"
+  version = "v0.2.2"
+
+[[projects]]
   digest = "1:972c2427413d41a1e06ca4897e8528e5a1622894050e2f527b38ddf0f343f759"
   name = "github.com/stretchr/testify"
   packages = ["assert"]
@@ -611,9 +672,10 @@
   revision = "589c23e65e65055d47b9ad4a99723bc389136265"
 
 [[projects]]
-  digest = "1:6f3bd49ddf2e104e52062774d797714371fac1b8bddfd8e124ce78e6b2264a10"
+  digest = "1:9e29a0ec029d012437d88da3ccccf18adcdce069cab08d462056c2c6bb006505"
   name = "google.golang.org/appengine"
   packages = [
+    "cloudsql",
     "internal",
     "internal/base",
     "internal/datastore",
@@ -692,8 +754,10 @@
   input-imports = [
     "github.com/athoune/yangtze/index",
     "github.com/containerd/fifo",
+    "github.com/davecgh/go-spew/spew",
     "github.com/influxdata/flux",
     "github.com/influxdata/flux/ast",
+    "github.com/influxdata/flux/builtin",
     "github.com/influxdata/flux/control",
     "github.com/influxdata/flux/execute",
     "github.com/influxdata/flux/interpreter",
