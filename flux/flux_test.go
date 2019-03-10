@@ -1,7 +1,9 @@
 package flux
 
 import (
+	"context"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,24 +11,18 @@ import (
 	_ "github.com/factorysh/go-lepsius/flux/output" // output flux
 	"github.com/influxdata/flux"
 	"github.com/influxdata/flux/ast"
+	_ "github.com/influxdata/flux/builtin"
 	"github.com/influxdata/flux/interpreter"
+	"github.com/influxdata/flux/lang"
 	"github.com/influxdata/flux/parser"
 	"github.com/influxdata/flux/semantic"
-	_ "github.com/influxdata/flux/stdlib" // universe flux
 	"github.com/influxdata/flux/values"
 )
 
-func init() {
-	flux.FinalizeBuiltIns()
-}
 func TestFlux(t *testing.T) {
 	ql := `
-	import "input"
-	import "output"
 	a = 1+1
 	b = a *2
-	p = input.pipe(path:"/tmp/lepsius")
-	p |> output.spew()
 	`
 	pkg := parser.ParseSource(ql)
 	if ast.Check(pkg) > 0 {
@@ -49,4 +45,26 @@ func TestFlux(t *testing.T) {
 	testScope.Range(func(k string, v values.Value) {
 		fmt.Println(k, v)
 	})
+}
+
+func TestVanilla(t *testing.T) {
+	ql := `
+		import "csv"
+		csv.from(file: "toto.csv")
+	`
+	c := lang.FluxCompiler{
+		Query: ql,
+	}
+
+	//querier := cmd.NewQuerier()
+	querier := New(os.Stdout)
+	//result, err := querier.Query(context.Background(), c)
+	err := querier.Query(context.Background(), c)
+	assert.NoError(t, err)
+	//defer result.Release()
+
+	//encoder := csv.NewMultiResultEncoder(csv.DefaultEncoderConfig())
+	//_, err = encoder.Encode(os.Stdout, result)
+
+	//assert.NoError(t, err)
 }

@@ -1,0 +1,6 @@
+#datatype,string,long,string,long,long
+#group,false,false,false,false,false
+#default,_result,,,,
+,result,table,name,age,weight
+,,,alice,32,53
+,,,bob,27,120

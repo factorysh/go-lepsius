@@ -321,7 +321,7 @@
   version = "v0.3.7"
 
 [[projects]]
-  digest = "1:e6999371bc5ac9d1bc97f16f27a8cf49a97e091701b8c08653faa3e1874cc209"
+  digest = "1:eb997333e76598c45e5129935c3bdd5dd2488ed21bd229c0315266b6270ff2d4"
   name = "github.com/influxdata/flux"
   packages = [
     ".",
@@ -339,6 +339,7 @@
     "internal/token",
     "interpreter",
     "iocounter",
+    "lang",
     "line",
     "memory",
     "parser",
@@ -361,8 +362,8 @@
     "values",
   ]
   pruneopts = "UT"
-  revision = "af24bbe75bf498c719a56e41f5b0a1eda24438ef"
-  version = "v0.21.2"
+  revision = "976b3f993f6c41cd1e939d748f1cd0f7dc87a3a9"
+  version = "v0.21.4"
 
 [[projects]]
   branch = "master"
@@ -759,13 +760,15 @@
     "github.com/influxdata/flux/ast",
     "github.com/influxdata/flux/builtin",
     "github.com/influxdata/flux/control",
+    "github.com/influxdata/flux/csv",
     "github.com/influxdata/flux/execute",
     "github.com/influxdata/flux/interpreter",
+    "github.com/influxdata/flux/lang",
     "github.com/influxdata/flux/memory",
     "github.com/influxdata/flux/parser",
     "github.com/influxdata/flux/plan",
     "github.com/influxdata/flux/semantic",
-    "github.com/influxdata/flux/stdlib/universe",
+    "github.com/influxdata/flux/stdlib",
     "github.com/influxdata/flux/values",
     "github.com/mitchellh/mapstructure",
     "github.com/stretchr/testify/assert",
