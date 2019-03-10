@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	_ "github.com/factorysh/go-lepsius/flux/output" // output flux
+	"github.com/factorysh/go-lepsius/flux/query"
 	"github.com/influxdata/flux"
 	"github.com/influxdata/flux/ast"
 	_ "github.com/influxdata/flux/builtin"
@@ -57,7 +58,7 @@ func TestVanilla(t *testing.T) {
 	}
 
 	//querier := cmd.NewQuerier()
-	querier := New(os.Stdout)
+	querier := query.New(os.Stdout)
 	//result, err := querier.Query(context.Background(), c)
 	err := querier.Query(context.Background(), c)
 	assert.NoError(t, err)
