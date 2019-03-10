@@ -57,15 +57,7 @@ func TestVanilla(t *testing.T) {
 		Query: ql,
 	}
 
-	//querier := cmd.NewQuerier()
 	querier := query.New(os.Stdout)
-	//result, err := querier.Query(context.Background(), c)
 	err := querier.Query(context.Background(), c)
 	assert.NoError(t, err)
-	//defer result.Release()
-
-	//encoder := csv.NewMultiResultEncoder(csv.DefaultEncoderConfig())
-	//_, err = encoder.Encode(os.Stdout, result)
-
-	//assert.NoError(t, err)
 }
