@@ -1,9 +1,10 @@
 package flux
 
 import (
+	"bytes"
 	"context"
 	"fmt"
-	"os"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -57,7 +58,18 @@ func TestVanilla(t *testing.T) {
 		Query: ql,
 	}
 
-	querier := query.New(os.Stdout)
+	buff := &bytes.Buffer{}
+	querier := query.New(buff)
 	err := querier.Query(context.Background(), c)
+	assert.NoError(t, err)
+	assert.True(t, buff.Len() > 0)
+	s := buff.String()
+	for _, line := range strings.Split(s, "\n") {
+		if strings.HasPrefix(line, "#") {
+			continue
+		}
+		cols := strings.Split(line, ",")
+		fmt.Println(cols)
+	}
 	assert.NoError(t, err)
 }
