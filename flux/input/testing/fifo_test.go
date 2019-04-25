@@ -28,7 +28,8 @@ func TestFifo(t *testing.T) {
 
 	c := lang.FluxCompiler{Query: ql}
 
-	querier := query.New(os.Stdout)
+	querier, err := query.New(os.Stdout)
+	assert.NoError(t, err)
 	err = querier.Query(context.Background(), c)
 	assert.NoError(t, err)
 

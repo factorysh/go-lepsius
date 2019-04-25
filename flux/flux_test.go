@@ -59,8 +59,9 @@ func TestVanilla(t *testing.T) {
 	}
 
 	buff := &bytes.Buffer{}
-	querier := query.New(buff)
-	err := querier.Query(context.Background(), c)
+	querier, err := query.New(buff)
+	assert.NoError(t, err)
+	err = querier.Query(context.Background(), c)
 	assert.NoError(t, err)
 	assert.True(t, buff.Len() > 0)
 	s := buff.String()

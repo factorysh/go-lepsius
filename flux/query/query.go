@@ -15,15 +15,20 @@ type Querier struct {
 	writer io.Writer
 }
 
-func New(writer io.Writer) *Querier {
+func New(writer io.Writer) (*Querier, error) {
 	cfg := control.Config{
-		ConcurrencyQuota: 1,
-		MemoryBytesQuota: math.MaxInt64,
+		ConcurrencyQuota:         1,
+		MemoryBytesQuotaPerQuery: math.MaxInt64,
+		QueueSize:                1,
+	}
+	ctrl, err := control.New(cfg)
+	if err != nil {
+		return nil, err
 	}
 	return &Querier{
-		C:      control.New(cfg),
+		C:      ctrl,
 		writer: writer,
-	}
+	}, nil
 
 }
 

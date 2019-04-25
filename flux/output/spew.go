@@ -27,7 +27,7 @@ func init() {
 		flux.FunctionValueWithSideEffect(SpewKind, createSpewOpSpec, spewSignature))
 	flux.RegisterOpSpec(SpewKind, func() flux.OperationSpec { return &SpewOpSpec{} })
 	plan.RegisterProcedureSpecWithSideEffect(SpewKind, newSpewProcedure, SpewKind)
-	//execute.RegisterTransformation(SpewKind, createSpewTransformation)
+	execute.RegisterTransformation(SpewKind, createSpewTransformation)
 }
 
 func createSpewOpSpec(args flux.Arguments, a *flux.Administration) (flux.OperationSpec, error) {
